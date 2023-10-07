@@ -1,6 +1,30 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  version = false,
+  build = ":TSUpdate",
+  event = "VeryLazy",
   opts = {
+    ensure_installed = {
+      "bash",
+      "c",
+      "html",
+      "javascript",
+      "jsdoc",
+      "json",
+      "lua",
+      "luadoc",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "query",
+      "regex",
+      "tsx",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "yaml",
+    },
     textobjects = {
       select = {
         enable = true,
@@ -46,4 +70,7 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("nvim-treesitter.configs").setup(opts)
+  end,
 }

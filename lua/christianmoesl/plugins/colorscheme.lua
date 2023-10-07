@@ -1,19 +1,21 @@
 return {
   {
     "catppuccin/nvim",
-    lazy = true,
     name = "catppuccin",
+    priority = 1000,
+    lazy = false,
     opts = {
+      flavour = "mocha",
       integrations = {
         alpha = true,
-        cmp = true,
-        flash = true,
-        gitsigns = true,
-        illuminate = true,
+        cmp = false,
+        flash = false,
+        gitsigns = false,
+        illuminate = false,
         indent_blankline = { enabled = true },
-        lsp_trouble = true,
-        mason = true,
-        mini = true,
+        lsp_trouble = false,
+        mason = false,
+        mini = false,
         native_lsp = {
           enabled = true,
           underlines = {
@@ -23,31 +25,25 @@ return {
             information = { "undercurl" },
           },
         },
-        navic = { enabled = true, custom_bg = "lualine" },
-        neotest = true,
-        noice = true,
-        notify = true,
+        navic = { enabled = false, custom_bg = "lualine" },
+        neotest = false,
+        noice = false,
+        notify = false,
         neotree = true,
-        semantic_tokens = true,
-        telescope = true,
+        semantic_tokens = false,
+        telescope = false,
         treesitter = true,
         which_key = true,
       },
     },
-  },
-  -- Configure LazyVim to load gruvbox
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "catppuccin",
-    },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+
+      vim.cmd.colorscheme("catppuccin")
+    end,
   },
   {
     "numToStr/Comment.nvim",
-    event = "VeryLazy",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-context",
     event = "VeryLazy",
   },
 }

@@ -1,5 +1,14 @@
 return {
   {
+    "mfussenegger/nvim-jdtls",
+    opts = {
+      cmd = {
+        "jdtls",
+        "--jvm-arg=-javaagent:/Users/chris/.local/share/nvim/mason/packages/jdtls/lombok.jar",
+      },
+    },
+  },
+  {
     "nvimtools/none-ls.nvim",
     opts = function(_, opts)
       local null_ls = require("null-ls")
@@ -19,6 +28,9 @@ return {
           to_stdin = true,
         }),
       }
+      if opts.sources == nil then
+        opts.sources = {}
+      end
       table.insert(opts.sources, gradle_fromatter)
     end,
   },
