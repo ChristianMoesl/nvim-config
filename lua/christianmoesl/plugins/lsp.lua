@@ -90,7 +90,7 @@ return {
       -- setup formatting and keymaps
       require("christianmoesl.util").on_attach(function(client, buffer)
         local util = require("christianmoesl.util")
-        keymaps = {
+        local keymaps = {
           { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
           { "K", vim.lsp.buf.hover, desc = "Hover" },
           {
@@ -124,12 +124,12 @@ return {
 
         for _, keys in pairs(keymaps) do
           if not keys.has or util.has(buffer, keys.has) then
-            local opts = {
+            local keys_opts = {
               silent = true,
               buffer = buffer,
               desc = keys.desc,
             }
-            vim.keymap.set(keys.mode or "n", keys[1], keys[2], opts)
+            vim.keymap.set(keys.mode or "n", keys[1], keys[2], keys_opts)
           end
         end
       end)
