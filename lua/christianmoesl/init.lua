@@ -14,7 +14,11 @@ vim.opt.rtp:prepend(lazypath)
 require("christianmoesl.config.options")
 require("christianmoesl.config.keymaps")
 
-require("lazy").setup("christianmoesl.plugins", {
+require("lazy").setup({
+  spec = {
+    { import = "christianmoesl.plugins" },
+    { import = "christianmoesl.plugins.languages" },
+  },
   defaults = {
     lazy = true,
   },

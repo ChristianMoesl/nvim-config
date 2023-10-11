@@ -28,10 +28,7 @@ return {
           to_stdin = true,
         }),
       }
-      if opts.sources == nil then
-        opts.sources = {}
-      end
-      table.insert(opts.sources, gradle_fromatter)
+      opts.sources = vim.list_extend(opts.sources or {}, { gradle_fromatter })
     end,
   },
 }

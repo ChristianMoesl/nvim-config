@@ -1,3 +1,57 @@
+local function map_lsp_keys(client, buffer)
+  local util = require("christianmoesl.util")
+  local keymaps = {
+    { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
+    { "K", vim.lsp.buf.hover, desc = "Hover" },
+    {
+      "gK",
+      vim.lsp.buf.signature_help,
+      desc = "Signature Help",
+      has = "signatureHelp",
+    },
+    {
+      "<c-k>",
+      vim.lsp.buf.signature_help,
+      mode = "i",
+      desc = "Signature Help",
+      has = "signatureHelp",
+    },
+    { "gi", vim.lsp.buf.implementation, desc = "Goto implementation" },
+    {
+      "gd",
+      function()
+        require("telescope.builtin").lsp_definitions({ reuse_win = true })
+      end,
+      desc = "Goto Definition",
+      has = "definition",
+    },
+    { "]d", util.diagnostic_goto(true), desc = "Next Diagnostic" },
+    { "[d", util.diagnostic_goto(false), desc = "Prev Diagnostic" },
+    { "]e", util.diagnostic_goto(true, "ERROR"), desc = "Next Error" },
+    { "[e", util.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
+    { "]w", util.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
+    { "[w", util.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
+    {
+      "<leader>ca",
+      vim.lsp.buf.code_action,
+      desc = "Code Action",
+      mode = { "n", "v" },
+      has = "codeAction",
+    },
+  }
+
+  for _, keys in pairs(keymaps) do
+    if not keys.has or util.has(buffer, keys.has) then
+      local keys_opts = {
+        silent = true,
+        buffer = buffer,
+        desc = keys.desc,
+      }
+      vim.keymap.set(keys.mode or "n", keys[1], keys[2], keys_opts)
+    end
+  end
+end
+
 return {
   -- add any tools you want to have installed below
   {
@@ -6,10 +60,8 @@ return {
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
-        "stylua",
         "shellcheck",
         "shfmt",
-        "lua-language-server",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
@@ -55,92 +107,22 @@ return {
       autoformat = true,
       -- LSP Server Settings
       ---@type lspconfig.options
-      servers = {
-        lua_ls = {
-          -- mason = false, -- set to false if you don't want this server to be installed with mason
-          -- Use this to add any additional keymaps
-          -- for specific lsp servers
-          ---@type LazyKeys[]
-          -- keys = {},
-          settings = {
-            Lua = {
-              workspace = {
-                checkThirdParty = false,
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-            },
-          },
-        },
-      },
+      servers = {},
       setup = {},
     },
     config = function(_, opts)
       -- setup autoformat
       require("christianmoesl.core.format").setup(opts)
       -- setup formatting and keymaps
-      require("christianmoesl.util").on_attach(function(client, buffer)
-        local util = require("christianmoesl.util")
-        local keymaps = {
-          { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-          { "K", vim.lsp.buf.hover, desc = "Hover" },
-          {
-            "gK",
-            vim.lsp.buf.signature_help,
-            desc = "Signature Help",
-            has = "signatureHelp",
-          },
-          {
-            "<c-k>",
-            vim.lsp.buf.signature_help,
-            mode = "i",
-            desc = "Signature Help",
-            has = "signatureHelp",
-          },
-          { "gi", vim.lsp.buf.implementation, desc = "Goto implementation" },
-          {
-            "gd",
-            function()
-              require("telescope.builtin").lsp_definitions({ reuse_win = true })
-            end,
-            desc = "Goto Definition",
-            has = "definition",
-          },
-          { "]d", util.diagnostic_goto(true), desc = "Next Diagnostic" },
-          { "[d", util.diagnostic_goto(false), desc = "Prev Diagnostic" },
-          { "]e", util.diagnostic_goto(true, "ERROR"), desc = "Next Error" },
-          { "[e", util.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
-          { "]w", util.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
-          { "[w", util.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
-          {
-            "<leader>ca",
-            vim.lsp.buf.code_action,
-            desc = "Code Action",
-            mode = { "n", "v" },
-            has = "codeAction",
-          },
-        }
+      require("christianmoesl.util").on_attach(map_lsp_keys)
 
-        for _, keys in pairs(keymaps) do
-          if not keys.has or util.has(buffer, keys.has) then
-            local keys_opts = {
-              silent = true,
-              buffer = buffer,
-              desc = keys.desc,
-            }
-            vim.keymap.set(keys.mode or "n", keys[1], keys[2], keys_opts)
-          end
-        end
-      end)
-
-      local servers = opts.servers
-      local function setup(server)
+      for server, _ in pairs(opts.servers) do
         local server_opts = vim.tbl_deep_extend("force", {
-          capabilities = vim.deepcopy(capabilities),
-        }, servers[server] or {})
+          capabilities = vim.deepcopy(opts.capabilities),
+        }, opts.servers[server] or {})
+
+        require("lspconfig")[server].setup(server_opts)
       end
-      require("lspconfig").lua_ls.setup({})
     end,
   },
   -- formatters
@@ -148,22 +130,19 @@ return {
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
     dependencies = { "mason.nvim" },
-    opts = function()
+    opts = function(_, opts)
       local nls = require("null-ls")
-      return {
-        root_dir = require("null-ls.utils").root_pattern(
-          ".null-ls-root",
-          ".neoconf.json",
-          "Makefile",
-          ".git"
-        ),
-        sources = {
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
-          nls.builtins.formatting.stylua,
-          nls.builtins.formatting.shfmt,
-        },
-      }
+      opts.root_dir = require("null-ls.utils").root_pattern(
+        ".null-ls-root",
+        ".neoconf.json",
+        "Makefile",
+        ".git"
+      )
+      opts.sources = vim.list_extend(opts.sources or {}, {
+        nls.builtins.formatting.fish_indent,
+        nls.builtins.diagnostics.fish,
+        nls.builtins.formatting.shfmt,
+      })
     end,
   },
 }
