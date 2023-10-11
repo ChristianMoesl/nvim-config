@@ -8,13 +8,13 @@ return {
       flavour = "mocha",
       integrations = {
         alpha = true,
-        cmp = false,
+        cmp = true,
         flash = false,
-        gitsigns = false,
+        gitsigns = true,
         illuminate = false,
         indent_blankline = { enabled = true },
         lsp_trouble = false,
-        mason = false,
+        mason = true,
         mini = false,
         native_lsp = {
           enabled = true,
@@ -27,11 +27,11 @@ return {
         },
         navic = { enabled = false, custom_bg = "lualine" },
         neotest = false,
-        noice = false,
+        noice = true,
         notify = false,
         neotree = true,
         semantic_tokens = false,
-        telescope = false,
+        telescope = true,
         treesitter = true,
         which_key = true,
       },
@@ -41,9 +41,5 @@ return {
 
       vim.cmd.colorscheme("catppuccin")
     end,
-  },
-  {
-    "numToStr/Comment.nvim",
-    event = "VeryLazy",
   },
 }
