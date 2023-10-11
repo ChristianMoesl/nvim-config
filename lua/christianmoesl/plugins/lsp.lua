@@ -9,6 +9,7 @@ return {
         "stylua",
         "shellcheck",
         "shfmt",
+        "lua-language-server",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
@@ -33,6 +34,7 @@ return {
       { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "nvim-telescope/telescope.nvim",
     },
     opts = {
       diagnostics = {
@@ -75,16 +77,6 @@ return {
       setup = {},
     },
     config = function(_, opts)
-      local mlsp = require("mason-lspconfig")
-
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        {},
-        opts.capabilities or {}
-      )
-
       -- setup autoformat
       require("christianmoesl.core.format").setup(opts)
       -- setup formatting and keymaps
@@ -107,6 +99,14 @@ return {
             has = "signatureHelp",
           },
           { "gi", vim.lsp.buf.implementation, desc = "Goto implementation" },
+          {
+            "gd",
+            function()
+              require("telescope.builtin").lsp_definitions({ reuse_win = true })
+            end,
+            desc = "Goto Definition",
+            has = "definition",
+          },
           { "]d", util.diagnostic_goto(true), desc = "Next Diagnostic" },
           { "[d", util.diagnostic_goto(false), desc = "Prev Diagnostic" },
           { "]e", util.diagnostic_goto(true, "ERROR"), desc = "Next Error" },
@@ -139,10 +139,8 @@ return {
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
-        require("lspconfig")[server].setup(server_opts)
       end
-
-      mlsp.setup({ ensure_installed = { "lua_ls" }, handlers = { setup } })
+      require("lspconfig").lua_ls.setup({})
     end,
   },
   -- formatters
