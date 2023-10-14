@@ -2,12 +2,12 @@ return {
   -- install formatter and Lua LSP server
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
         "stylua",
         "lua-language-server",
-      },
-    },
+      })
+    end,
   },
   {
     "neovim/nvim-lspconfig",
