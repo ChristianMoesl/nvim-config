@@ -4,7 +4,10 @@ return {
   "nvim-telescope/telescope.nvim",
   cmd = "Telescope",
   branch = "0.1.x",
-  dependencies = { "nvim-lua/plenary.nvim" },
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-telescope/telescope-ui-select.nvim",
+  },
   keys = {
     {
       "<leader>,",
@@ -80,4 +83,8 @@ return {
       desc = "Workspace diagnostics",
     },
   },
+  config = function(_, opts)
+    require("telescope").setup(opts)
+    require("telescope").load_extension("ui-select")
+  end,
 }

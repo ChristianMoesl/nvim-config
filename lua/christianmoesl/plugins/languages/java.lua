@@ -13,6 +13,8 @@ return {
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "jdtls",
+        "java-test", -- build from source instead of installing it with Mason: https://github.com/mason-org/mason-registry/pull/3083
+        "java-debug-adapter",
       })
     end,
   },
@@ -31,7 +33,11 @@ return {
   {
     "mfussenegger/nvim-jdtls",
     branch = "master",
-    dependencies = { "folke/which-key.nvim" },
+    dependencies = {
+      "folke/which-key.nvim",
+      "mfussenegger/nvim-dap",
+      "rcarriga/nvim-dap-ui",
+    },
     ft = { "java" },
     opts = {
       cmd = {
@@ -72,8 +78,35 @@ return {
           require("cmp_nvim_lsp").default_capabilities()
         )
 
+        -- Find the extra bundles that should be passed on the jdtls command-line
+        -- if nvim-dap is enabled with java debug/test.
+        local mason_registry = require("mason-registry")
+        opts.init_options = {
+          bundles = {}, ---@type string[]
+        }
+        local java_dbg_pkg = mason_registry.get_package("java-debug-adapter")
+        local java_dbg_path = java_dbg_pkg:get_install_path()
+        local jar_patterns = {
+          java_dbg_path
+            .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+        }
+
+        -- java-test also depends on java-debug-adapter.
+        local java_test_pkg = mason_registry.get_package("java-test")
+        local java_test_path = java_test_pkg:get_install_path()
+        vim.list_extend(jar_patterns, {
+          java_test_path .. "/extension/server/*.jar",
+        })
+
+        for _, jar_pattern in ipairs(jar_patterns) do
+          for _, bundle in ipairs(vim.split(vim.fn.glob(jar_pattern), "\n")) do
+            table.insert(opts.init_options.bundles, bundle)
+          end
+        end
+
         -- Existing server will be reused if the root_dir matches.
         require("jdtls").start_or_attach(opts)
+        require("jdtls").setup_dap(opts.dap)
       end
 
       -- Attach the jdtls for each java buffer. HOWEVER, this plugin loads
@@ -82,6 +115,30 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "java" },
         callback = attach_jdtls,
+      })
+
+      -- Setup keymap and dap after the lsp is fully attached.
+      -- https://github.com/mfussenegger/nvim-jdtls#nvim-dap-configuration
+      -- https://neovim.io/doc/user/lsp.html#LspAttach
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client == nil or client.name ~= "jdtls" then
+            return
+          end
+          vim.keymap.set(
+            "n",
+            "<leader>tf",
+            function() require("jdtls").test_class() end,
+            { desc = "Test File" }
+          )
+          vim.keymap.set(
+            "n",
+            "<leader>tn",
+            function() require("jdtls").test_nearest_method() end,
+            { desc = "Test Nearest Method" }
+          )
+        end,
       })
 
       attach_jdtls()
@@ -95,22 +152,9 @@ return {
         spotless = {
           -- This can be a string or a function that returns a string
           command = vim.fn.expand("~") .. "/.config/nvim/spotless.sh",
-          -- OPTIONAL - all fields below this are optional
-          -- A list of strings, or a function that returns a list of strings
-          -- Return a single string instead to run the command in a shell
-          -- args = { "--stdin-from-filename", "$FILENAME" },
           args = {
             "$FILENAME",
           },
-          -- If the formatter supports range formatting, create the range arguments here
-          -- range_args = function(ctx)
-          --   return {
-          --     "--line-start",
-          --     ctx.range.start[1],
-          --     "--line-end",
-          --     ctx.range["end"][1],
-          --   }
-          -- end,
           -- Send file contents to stdin, read new contents from stdout (default true)
           -- When false, will create a temp file (will appear in "$FILENAME" args). The temp
           -- file is assumed to be modified in-place by the format command.
@@ -136,15 +180,5 @@ return {
         },
       })
     end,
-  },
-  {
-    "nvim-neotest/neotest",
-    opts = {
-      -- Can be a list of adapters like what neotest expects,
-      -- or a list of adapter names,
-      -- or a table of adapter names, mapped to adapter configs.
-      -- The adapter will then be automatically loaded with the config.
-      adapters = {},
-    },
   },
 }
