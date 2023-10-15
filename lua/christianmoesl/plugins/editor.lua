@@ -39,4 +39,9 @@ return {
       -- add any options here
     },
   },
+  {
+    "stevearc/conform.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 }

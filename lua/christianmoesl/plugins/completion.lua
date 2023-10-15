@@ -8,6 +8,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "saadparwaiz1/cmp_luasnip",
     },
     opts = function()
       vim.api.nvim_set_hl(
@@ -45,6 +46,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "path" },
+          { name = "luasnip" },
         }, {
           { name = "buffer" },
         }),
@@ -54,6 +56,9 @@ return {
           },
         },
         sorting = defaults.sorting,
+        snippet = {
+          expand = function(args) require("luasnip").lsp_expand(args.body) end,
+        },
       }
     end,
     ---@param opts cmp.ConfigSchema
@@ -63,5 +68,12 @@ return {
       end
       require("cmp").setup(opts)
     end,
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp",
   },
 }

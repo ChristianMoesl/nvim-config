@@ -16,7 +16,11 @@ local function map_lsp_keys(client, buffer)
       desc = "Signature Help",
       has = "signatureHelp",
     },
-    { "gi", vim.lsp.buf.implementation, desc = "Goto implementation" },
+    {
+      "gi",
+      vim.lsp.buf.implementation,
+      desc = "Goto implementation",
+    },
     {
       "gd",
       function()
@@ -24,6 +28,11 @@ local function map_lsp_keys(client, buffer)
       end,
       desc = "Goto Definition",
       has = "definition",
+    },
+    {
+      "sr",
+      function() require("telescope.builtin").lsp_references() end,
+      desc = "References",
     },
     { "]d", util.diagnostic_goto(true), desc = "Next Diagnostic" },
     { "[d", util.diagnostic_goto(false), desc = "Prev Diagnostic" },
@@ -60,6 +69,7 @@ return {
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
+        "codespell",
         "shellcheck",
         "shfmt",
       },
@@ -111,8 +121,6 @@ return {
       setup = {},
     },
     config = function(_, opts)
-      -- setup autoformat
-      require("christianmoesl.core.format").setup(opts)
       -- setup formatting and keymaps
       require("christianmoesl.util").on_attach(map_lsp_keys)
 
@@ -123,26 +131,6 @@ return {
 
         require("lspconfig")[server].setup(server_opts)
       end
-    end,
-  },
-  -- formatters
-  {
-    "nvimtools/none-ls.nvim",
-    event = "VeryLazy",
-    dependencies = { "mason.nvim" },
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      opts.root_dir = require("null-ls.utils").root_pattern(
-        ".null-ls-root",
-        ".neoconf.json",
-        "Makefile",
-        ".git"
-      )
-      opts.sources = vim.list_extend(opts.sources or {}, {
-        nls.builtins.formatting.fish_indent,
-        nls.builtins.diagnostics.fish,
-        nls.builtins.formatting.shfmt,
-      })
     end,
   },
 }
