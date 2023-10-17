@@ -31,17 +31,33 @@ return {
       wk.register(opts.defaults)
     end,
   },
-  -- add this to your lua/plugins.lua, lua/plugins/init.lua,  or the file you keep your other plugins:
   {
     "numToStr/Comment.nvim",
     event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
+    opts = {},
   },
   {
     "stevearc/conform.nvim",
     event = "VeryLazy",
+    opts = {},
+  },
+  -- scope markers based on indentation
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "VeryLazy",
+    main = "ibl",
+    opts = {
+      exclude = {
+        filetypes = {
+          "dashboard",
+        },
+      },
+    },
+  },
+  -- plugin to detect indentation width automatically
+  {
+    "nmac427/guess-indent.nvim",
+    lazy = false,
     opts = {},
   },
 }

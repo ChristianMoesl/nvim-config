@@ -20,7 +20,11 @@ return {
       local defaults = require("cmp.config.default")()
       return {
         completion = {
-          completeopt = "menu,menuone,noinsert",
+          keyword_length = 2,
+        },
+        performance = {
+          debounce = 200,
+          throttle = 50,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({

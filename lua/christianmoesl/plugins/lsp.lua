@@ -95,7 +95,6 @@ return {
     dependencies = {
       { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
       "nvim-telescope/telescope.nvim",
     },
     opts = {

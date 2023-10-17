@@ -44,6 +44,30 @@ return {
         "jdtls",
         "--jvm-arg=-javaagent:/Users/chris/.local/share/nvim/mason/packages/jdtls/lombok.jar",
       },
+      settings = {
+        java = {
+          signatureHelp = { enabled = true },
+          import = { enabled = true },
+          rename = { enabled = true },
+          implementationsCodeLens = {
+            enabled = true,
+          },
+          referencesCodeLens = {
+            enabled = true,
+          },
+          references = {
+            includeDecompiledSources = true,
+          },
+          completion = {
+            favoriteStaticMembers = {
+              "org.assertj.core.api.Assertions.assertThat",
+              "java.util.Objects.requireNonNull",
+              "java.util.Objects.requireNonNullElse",
+              "org.mockito.Mockito.*",
+            },
+          },
+        },
+      },
     },
     config = function(_, opts)
       local function attach_jdtls()
@@ -75,7 +99,9 @@ return {
         opts.capabilities = vim.tbl_deep_extend(
           "force",
           opts.capabilities or {},
-          require("cmp_nvim_lsp").default_capabilities()
+          require("cmp_nvim_lsp").default_capabilities({
+            snippetSupport = false,
+          })
         )
 
         -- Find the extra bundles that should be passed on the jdtls command-line
@@ -150,6 +176,8 @@ return {
       opts.formatters_by_ft.java = { "spotless" }
       opts.formatters = vim.tbl_deep_extend("force", opts.formatters or {}, {
         spotless = {
+          -- don't merge with default config
+          inherit = false,
           -- This can be a string or a function that returns a string
           command = vim.fn.expand("~") .. "/.config/nvim/spotless.sh",
           args = {
