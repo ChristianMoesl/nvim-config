@@ -47,6 +47,7 @@ local function map_lsp_keys(client, buffer)
       mode = { "n", "v" },
       has = "codeAction",
     },
+    { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
   }
 
   for _, keys in pairs(keymaps) do
