@@ -46,6 +46,7 @@ return {
       },
       settings = {
         java = {
+          autobuild = { enabled = true },
           signatureHelp = { enabled = true },
           import = { enabled = true },
           rename = { enabled = true },
@@ -65,6 +66,9 @@ return {
               "java.util.Objects.requireNonNullElse",
               "org.mockito.Mockito.*",
             },
+          },
+          edit = {
+            validateAllOpenBuffersOnChanges = true,
           },
         },
       },
@@ -131,7 +135,11 @@ return {
         end
 
         -- Existing server will be reused if the root_dir matches.
-        require("jdtls").start_or_attach(opts)
+        require("jdtls").start_or_attach(opts, nil, {
+          flags = {
+            debounce_text_changes = 150,
+          },
+        })
         require("jdtls").setup_dap(opts.dap)
       end
 
