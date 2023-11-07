@@ -90,6 +90,11 @@ return {
         function() builtin().lsp_references() end,
         desc = "Code References",
       },
+      {
+        "<leader>sk",
+        "<cmd>Telescope keymaps<cr>",
+        desc = "Keymaps",
+      },
     },
     opts = {},
     config = function(_, opts)

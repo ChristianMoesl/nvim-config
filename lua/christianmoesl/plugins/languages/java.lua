@@ -4,7 +4,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "java" })
+      vim.list_extend(opts.ensure_installed, { "java", "groovy", "kotlin" })
     end,
   },
   -- install formatter and Java LSP server
@@ -42,11 +42,16 @@ return {
     opts = {
       cmd = {
         "jdtls",
-        "--jvm-arg=-javaagent:/Users/chris/.local/share/nvim/mason/packages/jdtls/lombok.jar",
+        "--jvm-arg=" .. string.format(
+          "-javaagent:%s",
+          vim.fn.expand("$MASON/share/jdtls/lombok.jar")
+        ),
+        "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
       },
       settings = {
         java = {
           autobuild = { enabled = true },
+          maxConcurrentBuilds = 1,
           signatureHelp = { enabled = true },
           import = { enabled = true },
           rename = { enabled = true },
@@ -66,11 +71,23 @@ return {
               "java.util.Objects.requireNonNullElse",
               "org.mockito.Mockito.*",
             },
+            filteredTypes = {
+              "com.sun.*",
+              "io.micrometer.shaded.*",
+            },
           },
           edit = {
             validateAllOpenBuffersOnChanges = true,
           },
         },
+      },
+      handlers = {
+        ["language/status"] = function(_, _)
+          -- print(result)
+        end,
+        ["$/progress"] = function(_, _, _)
+          -- disable progress updates.
+        end,
       },
     },
     config = function(_, opts)
