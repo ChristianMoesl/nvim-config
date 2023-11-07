@@ -2,6 +2,9 @@ local M = {}
 
 M.root_patterns = { ".git" }
 
+function M.is_minimum_profile() return os.getenv("NVIM_PROFILE") == "MINIMUM" end
+function M.is_full_profile() return not M.is_minimum_profile() end
+
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -26,9 +29,7 @@ end
 function M.diagnostic_goto(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
-  return function()
-    go({ severity = severity })
-  end
+  return function() go({ severity = severity }) end
 end
 
 -- returns the root directory based on:
@@ -47,9 +48,10 @@ function M.get_root()
     for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders
       local paths = workspace
-          and vim.tbl_map(function(ws)
-            return vim.uri_to_fname(ws.uri)
-          end, workspace)
+          and vim.tbl_map(
+            function(ws) return vim.uri_to_fname(ws.uri) end,
+            workspace
+          )
         or client.config.root_dir and { client.config.root_dir }
         or {}
       for _, p in ipairs(paths) do
@@ -60,9 +62,7 @@ function M.get_root()
       end
     end
   end
-  table.sort(roots, function(a, b)
-    return #a > #b
-  end)
+  table.sort(roots, function(a, b) return #a > #b end)
   ---@type string?
   local root = roots[1]
   if not root then

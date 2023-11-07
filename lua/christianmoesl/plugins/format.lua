@@ -5,6 +5,7 @@ return {
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
+    cond = require("christianmoesl.util").is_full_profile,
     cmd = { "ConformInfo" },
     keys = {
       {

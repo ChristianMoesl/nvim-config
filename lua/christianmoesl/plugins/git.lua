@@ -2,6 +2,7 @@ return {
   {
     "tpope/vim-fugitive",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
   },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
@@ -9,6 +10,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     opts = {
       signs = {
         add = { text = "▎" },

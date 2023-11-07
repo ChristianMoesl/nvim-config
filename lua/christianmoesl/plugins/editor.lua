@@ -4,6 +4,7 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     opts = {
       plugins = { spelling = true },
       defaults = {
@@ -33,18 +34,21 @@ return {
   },
   {
     "numToStr/Comment.nvim",
+    cond = require("christianmoesl.util").is_full_profile,
     event = "VeryLazy",
     opts = {},
   },
   {
     "stevearc/conform.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     opts = {},
   },
   -- scope markers based on indentation
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     main = "ibl",
     opts = {
       exclude = {
@@ -58,6 +62,7 @@ return {
   {
     "nmac427/guess-indent.nvim",
     lazy = false,
+    cond = require("christianmoesl.util").is_full_profile,
     opts = {},
   },
 }

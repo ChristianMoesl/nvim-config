@@ -67,6 +67,7 @@ return {
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
+    cond = require("christianmoesl.util").is_full_profile,
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
@@ -93,6 +94,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
       { "folke/neodev.nvim", opts = {} },
       "mason.nvim",

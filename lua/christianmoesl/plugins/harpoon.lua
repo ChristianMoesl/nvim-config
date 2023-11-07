@@ -10,6 +10,7 @@ return {
   {
     "ThePrimeagen/harpoon",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
       "nvim-lua/plenary.nvim",
     },

@@ -9,6 +9,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
     },
+    cond = require("christianmoesl.util").is_full_profile,
     keys = {
       {
         "<leader>,",

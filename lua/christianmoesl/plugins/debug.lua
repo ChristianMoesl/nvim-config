@@ -27,6 +27,7 @@ return {
     dependencies = {
       "mfussenegger/nvim-dap",
     },
+    cond = require("christianmoesl.util").is_full_profile,
     -- stylua: ignore
     keys = {
       { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
@@ -72,6 +73,7 @@ return {
       { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
       { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
     },
+    cond = require("christianmoesl.util").is_full_profile,
     -- opts = {},
   },
 }

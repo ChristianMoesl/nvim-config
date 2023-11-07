@@ -33,6 +33,7 @@ return {
   {
     "mfussenegger/nvim-jdtls",
     branch = "master",
+    cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
       "folke/which-key.nvim",
       "mfussenegger/nvim-dap",

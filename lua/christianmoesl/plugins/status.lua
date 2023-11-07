@@ -1,7 +1,8 @@
 return {
   "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
   dependencies = { "nvim-tree/nvim-web-devicons" },
+  event = "VeryLazy",
+  cond = require("christianmoesl.util").is_full_profile,
   opts = {
     extensions = {
       "neo-tree",

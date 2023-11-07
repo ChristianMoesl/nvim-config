@@ -4,6 +4,7 @@ local notes_directory = vim.fn.expand("~")
 return {
   {
     "epwalsh/obsidian.nvim",
+    cond = require("christianmoesl.util").is_full_profile,
     event = {
       -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
       -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"

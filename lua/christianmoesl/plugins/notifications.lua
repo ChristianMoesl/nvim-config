@@ -2,6 +2,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
