@@ -43,11 +43,12 @@ local function fetch_github_prs()
   return mapped
 end
 
-local function build_pr_previewer()
+local function create_pr_previewer()
   local previewers = require("telescope.previewers")
   return previewers.new_termopen_previewer({
+    ---@param entry PrEntry
     get_command = function(entry, _)
-      return { "gh", "pr", "view", entry.value[1] }
+      return { "gh", "pr", "view", entry.value.id }
     end,
   })
 end
@@ -143,14 +144,73 @@ local function switch_pr(opts)
     :find()
 end
 
+---@param command string
+local function execute(command)
+  local Job = require("plenary.job")
+  Job:new({
+    enable_recording = true,
+    command = "zsh",
+    args = { "-c", command },
+    on_exit = function(job, return_val)
+      local level
+      if return_val == 0 then
+        level = vim.log.levels.INFO
+      else
+        level = vim.log.levels.ERROR
+      end
+      vim.notify(table.concat(job:result(), "\n"), level)
+    end,
+  }):start()
+end
+
 return {
   {
     "nvim-telescope/telescope.nvim",
     keys = {
       {
-        "<leader>gp",
-        function() switch_pr({ previewer = build_pr_previewer() }) end,
+        "<leader>gpc",
+        function() execute("gprc") end,
+        desc = "Create draft pull request",
+      },
+      {
+        "<leader>grm",
+        function() execute("grchanges") end,
+        desc = "Rebase on main branch",
+      },
+      {
+        "<leader>gps",
+        function() switch_pr({ previewer = create_pr_previewer() }) end,
         desc = "Switch GitHub PR",
+      },
+      {
+        "<leader>gpr",
+        function() execute("gprmr") end,
+        desc = "Make pull request ready for CDM",
+      },
+      {
+        "<leader>gpR",
+        function() execute("gprmrabs") end,
+        desc = "Make pull request ready for CDM & ABS",
+      },
+      {
+        "<leader>gdc",
+        function() execute("gbgc") end,
+        desc = "GC merged branches",
+      },
+      {
+        "<leader>gdC",
+        function() execute("greset") end,
+        desc = "GC local branches without remote",
+      },
+    },
+  },
+  {
+    "folke/which-key.nvim",
+    opts = {
+      defaults = {
+        ["<leader>gd"] = { name = "+delete" },
+        ["<leader>gr"] = { name = "+rebase" },
+        ["<leader>gp"] = { name = "+pull request" },
       },
     },
   },
