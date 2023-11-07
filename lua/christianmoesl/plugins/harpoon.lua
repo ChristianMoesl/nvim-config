@@ -1,35 +1,60 @@
 return {
-  "ThePrimeagen/harpoon",
-  lazy = false,
-  dependencies = {
-    "nvim-lua/plenary.nvim",
+  {
+    "folke/which-key.nvim",
+    opts = {
+      defaults = {
+        ["<leader>h"] = { name = "+harpoon" },
+      },
+    },
   },
-  config = true,
-  keys = {
-    {
-      "<leader>hm",
-      "<cmd>lua require('harpoon.mark').add_file()<cr>",
-      desc = "Mark file with harpoon",
+  {
+    "ThePrimeagen/harpoon",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
     },
-    {
-      "<leader>hn",
-      "<cmd>lua require('harpoon.ui').nav_next()<cr>",
-      desc = "Go to next harpoon mark",
-    },
-    {
-      "<leader>hp",
-      "<cmd>lua require('harpoon.ui').nav_prev()<cr>",
-      desc = "Go to previous harpoon mark",
-    },
-    {
-      "<leader>ha",
-      "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
-      desc = "Show harpoon marks",
-    },
-    {
-      "<C-S-h>",
-      "<cmd>lua require('harpoon.ui').nav_file(1)",
-      desc = "Navigate to file 1",
+    keys = {
+      {
+        "<leader>ha",
+        "<cmd>lua require('harpoon.mark').add_file()<cr>",
+        desc = "Mark file with harpoon",
+      },
+      {
+        "<leader>ho",
+        "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
+        desc = "Show harpoon marks",
+      },
+      {
+        "<A-h>",
+        "<cmd>lua require('harpoon.ui').nav_file(1)<cr>",
+        desc = "Navigate to file 1",
+      },
+      {
+        "<A-j>",
+        "<cmd>lua require('harpoon.ui').nav_file(2)<cr>",
+        desc = "Navigate to file 2",
+      },
+      {
+        "<A-k>",
+        "<cmd>lua require('harpoon.ui').nav_file(3)<cr>",
+        desc = "Navigate to file 3",
+      },
+      {
+        "<A-l>",
+        "<cmd>lua require('harpoon.ui').nav_file(4)<cr>",
+        desc = "Navigate to file 4",
+      },
+      {
+        "<A-;>",
+        "<cmd>lua require('harpoon.term').gotoTerminal(1)<cr>",
+        desc = "Navigate to terminal 1",
+      },
+      {
+        "<A-'>",
+        "<cmd>lua require('harpoon.term').gotoTerminal(2)<cr>",
+        desc = "Navigate to terminal 2",
+      },
+      opts = {},
     },
   },
 }
