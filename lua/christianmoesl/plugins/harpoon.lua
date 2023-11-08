@@ -55,7 +55,11 @@ return {
         "<cmd>lua require('harpoon.term').gotoTerminal(2)<cr>",
         desc = "Navigate to terminal 2",
       },
-      opts = {},
+    },
+    opts = {
+      menu = {
+        width = 120,
+      },
     },
   },
 }
