@@ -144,13 +144,24 @@ local function switch_pr(opts)
     :find()
 end
 
----@param command string
-local function execute(command)
+---@param command_args string|string[]
+local function execute(command_args)
   local Job = require("plenary.job")
+
+  local command
+  local args
+  if type(command_args) == "string" then
+    command = "zsh"
+    args = { "-c", command_args }
+  elseif type(command_args) == "table" then
+    command = command_args[1]
+    args = table.move(command_args, 2, #command_args, 1, {})
+  end
+
   Job:new({
     enable_recording = true,
-    command = "zsh",
-    args = { "-c", command },
+    command = command,
+    args = args,
     on_exit = function(job, return_val)
       local level
       if return_val == 0 then
@@ -158,9 +169,23 @@ local function execute(command)
       else
         level = vim.log.levels.ERROR
       end
-      vim.notify(table.concat(job:result(), "\n"), level)
+      local msg = table.concat(job:result(), "\n")
+        .. table.concat(job:stderr_result(), "\n")
+      vim.notify(msg, level)
     end,
   }):start()
+end
+
+local function create_and_switch_branch()
+  vim.ui.input({ prompt = "New Branch Name: " }, function(input)
+    if input then
+      if string.len(input) == 0 then
+        vim.notify("Failed to create branch without name", vim.log.levels.ERROR)
+      else
+        execute({ "git", "switch", "--create", input })
+      end
+    end
+  end)
 end
 
 return {
@@ -193,6 +218,11 @@ return {
         desc = "Make pull request ready for CDM & ABS",
       },
       {
+        "<leader>gpv",
+        function() execute({ "gh", "pr", "view", "--web" }) end,
+        desc = "View Pull Request in web browser",
+      },
+      {
         "<leader>gdc",
         function() execute("gbgc") end,
         desc = "GC merged branches",
@@ -201,6 +231,11 @@ return {
         "<leader>gdC",
         function() execute("greset") end,
         desc = "GC local branches without remote",
+      },
+      {
+        "<leader>gB",
+        create_and_switch_branch,
+        desc = "Create and switch branch",
       },
     },
   },
