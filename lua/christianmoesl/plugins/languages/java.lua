@@ -43,9 +43,9 @@ return {
     opts = {
       cmd = {
         "jdtls",
-        "--jvm-arg=" .. string.format(
-          "-javaagent:%s",
-          vim.fn.expand("$MASON/share/jdtls/lombok.jar")
+        string.format(
+          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok.jar",
+          vim.fn.stdpath("data")
         ),
         "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
       },
@@ -56,14 +56,15 @@ return {
           signatureHelp = { enabled = true },
           import = { enabled = true },
           rename = { enabled = true },
-          implementationsCodeLens = {
-            enabled = true,
-          },
-          referencesCodeLens = {
-            enabled = true,
-          },
+          implementationsCodeLens = { enabled = true },
+          referencesCodeLens = { enabled = true },
           references = {
             includeDecompiledSources = true,
+          },
+          jdt = {
+            ls = {
+              lombokSupport = { enabled = true },
+            },
           },
           completion = {
             favoriteStaticMembers = {
