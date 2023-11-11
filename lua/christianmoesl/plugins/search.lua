@@ -81,9 +81,7 @@ return {
       },
       {
         "<leader>sD",
-        function()
-          builtin().diagnostics({ root_dir = vim.fn.getcwd() .. "/src" })
-        end,
+        function() builtin().diagnostics({ root_dir = vim.fn.getcwd() }) end,
         desc = "Workspace diagnostics",
       },
       {
@@ -103,12 +101,10 @@ return {
       local defaults = {
         mappings = {
           i = {
-            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            ["<M-q>"] = false,
+            ["<M-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           },
           n = {
-            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            ["<M-q>"] = false,
+            ["<M-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           },
         },
       }

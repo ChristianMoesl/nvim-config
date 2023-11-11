@@ -1,3 +1,25 @@
+local function extract_filenames(filenames)
+  local shortened = {}
+
+  local counts = {}
+  for _, file in ipairs(filenames) do
+    local name = vim.fn.fnamemodify(file.filename, ":t")
+    counts[name] = (counts[name] or 0) + 1
+  end
+
+  for _, file in ipairs(filenames) do
+    local name = vim.fn.fnamemodify(file.filename, ":t")
+
+    if counts[name] == 1 then
+      table.insert(shortened, vim.fn.fnamemodify(name, ":t"))
+    else
+      table.insert(shortened, file.filename)
+    end
+  end
+
+  return shortened
+end
+
 return {
   {
     "folke/noice.nvim",
@@ -30,6 +52,20 @@ return {
       },
     },
   },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      -- install langauges for syntax highlighting in CMD line
+      -- https://github.com/folke/noice.nvim#%EF%B8%8F-requirements
+      ensure_installed = {
+        "vim",
+        "regex",
+        "lua",
+        "bash",
+        "markdown",
+      },
+    },
+  },
   -- which-key helps you remember key bindings by showing a popup
   -- with the active keybindings of the command you started typing.
   {
@@ -48,8 +84,6 @@ return {
         ["<leader>b"] = { name = "+buffer" },
         ["<leader>c"] = { name = "+code" },
         ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
         ["<leader>q"] = { name = "+quit/session" },
         ["<leader>s"] = { name = "+search" },
         ["<leader>u"] = { name = "+ui" },
@@ -64,17 +98,37 @@ return {
     end,
   },
   {
-    "nvim-treesitter/nvim-treesitter",
+    "nvim-lualine/lualine.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "ThePrimeagen/harpoon",
+      "catppuccin/nvim",
+    },
+    event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     opts = {
-      -- install langauges for syntax highlighting in CMD line
-      -- https://github.com/folke/noice.nvim#%EF%B8%8F-requirements
-      ensure_installed = {
-        "vim",
-        "regex",
-        "lua",
-        "bash",
-        "markdown",
-        "markdown_inline",
+      extensions = {
+        "lazy",
+        "mason",
+        "fugitive",
+        "quickfix",
+        "nvim-dap-ui",
+      },
+      sections = {
+        lualine_b = {
+          "branch",
+          "diff",
+          "diagnostics",
+          {
+            function()
+              local marks = require("harpoon").get_mark_config().marks
+              return table.concat(extract_filenames(marks), " | ")
+            end,
+            icon = "󰛢",
+            on_click = function() require("harpoon.ui").toggle_quick_menu() end,
+          },
+          "markdown_inline",
+        },
       },
     },
   },

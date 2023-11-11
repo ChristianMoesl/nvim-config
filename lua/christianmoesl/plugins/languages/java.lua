@@ -83,14 +83,14 @@ return {
           },
         },
       },
-      handlers = {
-        ["language/status"] = function(_, _)
-          -- print(result)
-        end,
-        ["$/progress"] = function(_, _, _)
-          -- disable progress updates.
-        end,
-      },
+      -- handlers = {
+      --   ["language/status"] = function(_, _)
+      --     -- print(result)
+      --   end,
+      --   ["$/progress"] = function(_, _, _)
+      --     -- disable progress updates.
+      --   end,
+      -- },
     },
     config = function(_, opts)
       local function attach_jdtls()

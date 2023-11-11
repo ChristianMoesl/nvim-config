@@ -1,3 +1,6 @@
+local Util = require("lazy.core.util")
+local b
+
 ---@class Pr
 ---@field id number
 ---@field title string
@@ -104,15 +107,9 @@ local function switch_branch(prompt_bufnr)
     },
     on_exit = function(_, return_val)
       if return_val == 0 then
-        vim.notify(
-          "Switched to branch " .. selection.value.branch_ref,
-          vim.log.levels.INFO
-        )
+        Util.info("Switched to branch " .. selection.value.branch_ref)
       else
-        vim.notify(
-          "Failed to switch to branch " .. selection.value.branch_ref,
-          vim.log.levels.ERROR
-        )
+        Util.error("Failed to switch to branch " .. selection.value.branch_ref)
       end
     end,
   }):start()
@@ -171,7 +168,7 @@ local function execute(command_args)
       end
       local msg = table.concat(job:result(), "\n")
         .. table.concat(job:stderr_result(), "\n")
-      vim.notify(msg, level)
+      Util.notify(msg, { level = level })
     end,
   }):start()
 end
@@ -180,7 +177,7 @@ local function create_and_switch_branch()
   vim.ui.input({ prompt = "New Branch Name: " }, function(input)
     if input then
       if string.len(input) == 0 then
-        vim.notify("Failed to create branch without name", vim.log.levels.ERROR)
+        Util.error("Failed to create branch without name")
       else
         execute({ "git", "switch", "--create", input })
       end

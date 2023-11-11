@@ -47,7 +47,8 @@ return {
     "folke/which-key.nvim",
     opts = {
       defaults = {
-        ["<leader>gh"] = { name = "+hunk" },
+        ["<leader>g"] = { name = "+git" },
+        ["<leader>gh"] = { name = "+hunks" },
       },
     },
   },
