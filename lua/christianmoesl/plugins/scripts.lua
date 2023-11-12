@@ -234,6 +234,14 @@ return {
         create_and_switch_branch,
         desc = "Create and switch branch",
       },
+      {
+        "<leader>xw",
+        function()
+          vim.diagnostic.setqflist()
+          vim.cmd("Cfilter! /build\\/openApi\\//")
+        end,
+        desc = "Workspace diagnostics in quickfix list",
+      },
     },
   },
   {

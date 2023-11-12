@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 require("christianmoesl.config.options")
 require("christianmoesl.config.keymaps")
 
+vim.cmd("packadd cfilter")
+
 require("lazy").setup({
   spec = {
     { import = "christianmoesl.plugins" },

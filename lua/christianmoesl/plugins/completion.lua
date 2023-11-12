@@ -53,8 +53,8 @@ return {
           keyword_length = 2,
         },
         performance = {
-          debounce = 300,
-          throttle = 60,
+          debounce = 100,
+          throttle = 50,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({
