@@ -1,5 +1,4 @@
 local Util = require("lazy.core.util")
-local b
 
 ---@class Pr
 ---@field id number
