@@ -15,6 +15,7 @@ return {
         "jdtls",
         "java-test", -- build from source instead of installing it with Mason: https://github.com/mason-org/mason-registry/pull/3083
         "java-debug-adapter",
+        "sonarlint-language-server",
       })
     end,
   },
@@ -206,7 +207,7 @@ return {
           -- don't merge with default config
           inherit = false,
           -- This can be a string or a function that returns a string
-          command = vim.fn.expand("~") .. "/.config/nvim/spotless.sh",
+          command = vim.fn.stdpath("config") .. "/spotless.sh",
           args = {
             "$FILENAME",
           },
@@ -235,5 +236,26 @@ return {
         },
       })
     end,
+  },
+  {
+    url = "https://gitlab.com/schrieveslaach/sonarlint.nvim.git",
+    dependencies = "nvim-jdtls",
+    ft = { "java" },
+    opts = {
+      server = {
+        cmd = {
+          "sonarlint-language-server",
+          "-stdio",
+          "-analyzers",
+          vim.fn.stdpath("data")
+            .. "/mason/share/sonarlint-analyzers/sonarjava.jar",
+        },
+      },
+      filetypes = {
+        -- Requires nvim-jdtls, otherwise an error message will be printed
+        "java",
+      },
+    },
+    config = function(_, opts) require("sonarlint").setup(opts) end,
   },
 }
