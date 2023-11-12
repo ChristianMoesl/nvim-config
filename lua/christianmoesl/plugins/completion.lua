@@ -1,3 +1,31 @@
+local cmp_kinds = {
+  Text = " ",
+  Method = "󰊕 ",
+  Function = "󰊕 ",
+  Constructor = "󰊕 ",
+  Field = "󰰬 ",
+  Variable = "󰰬 ",
+  Class = "󰯳 ",
+  Interface = "󰰅 ",
+  Module = " ",
+  Property = " ",
+  Unit = " ",
+  Value = "󰰬 ",
+  Enum = "󰯹 ",
+  Keyword = " ",
+  Snippet = " ",
+  Color = " ",
+  File = " ",
+  Reference = "󰰠 ",
+  Folder = " ",
+  EnumMember = "󰯹 ",
+  Constant = "󰯳 ",
+  Struct = " ",
+  Event = " ",
+  Operator = " ",
+  TypeParameter = " ",
+  Copilot = " ",
+}
 return {
   -- auto completion
   {
@@ -10,6 +38,7 @@ return {
       "hrsh7th/cmp-path",
       "zbirenbaum/copilot-cmp",
       "saadparwaiz1/cmp_luasnip",
+      "onsails/lspkind.nvim",
     },
     opts = function()
       vim.api.nvim_set_hl(
@@ -66,9 +95,15 @@ return {
         snippet = {
           expand = function(args) require("luasnip").lsp_expand(args.body) end,
         },
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = function(_, vim_item)
+            vim_item.kind = cmp_kinds[vim_item.kind] or ""
+            return vim_item
+          end,
+        },
       }
     end,
-    ---@param opts cmp.ConfigSchema
     config = function(_, opts)
       for _, source in ipairs(opts.sources) do
         source.group_index = source.group_index or 1
