@@ -8,6 +8,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "zbirenbaum/copilot-cmp",
       "saadparwaiz1/cmp_luasnip",
     },
     opts = function()
@@ -49,6 +50,7 @@ return {
           end,
         }),
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "path" },
           { name = "luasnip" },
