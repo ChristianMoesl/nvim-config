@@ -19,8 +19,6 @@ return {
         "html",
         "json",
         "dockerfile",
-        "markdown",
-        "markdown_inline",
         "query",
         "regex",
         "vim",
