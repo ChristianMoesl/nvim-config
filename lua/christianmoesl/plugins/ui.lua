@@ -33,6 +33,14 @@ return {
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     },
+    keymaps = {
+      vim.keymap.set(
+        "c",
+        "<S-Enter>",
+        function() require("noice").redirect(vim.fn.getcmdline()) end,
+        { desc = "Redirect Cmdline" }
+      ),
+    },
     opts = {
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -55,7 +63,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      -- install langauges for syntax highlighting in CMD line
+      -- install languages for syntax highlighting in CMD line
       -- https://github.com/folke/noice.nvim#%EF%B8%8F-requirements
       ensure_installed = {
         "vim",

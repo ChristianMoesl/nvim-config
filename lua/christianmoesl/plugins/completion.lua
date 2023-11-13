@@ -39,6 +39,7 @@ return {
       "zbirenbaum/copilot-cmp",
       "saadparwaiz1/cmp_luasnip",
       "onsails/lspkind.nvim",
+      "L3MON4D3/LuaSnip",
     },
     opts = function()
       vim.api.nvim_set_hl(

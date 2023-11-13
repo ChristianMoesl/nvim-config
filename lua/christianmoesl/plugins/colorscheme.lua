@@ -29,7 +29,7 @@ return {
         neotest = true,
         noice = true,
         notify = false,
-        neotree = true,
+        neotree = false,
         semantic_tokens = false,
         telescope = true,
         treesitter = true,
