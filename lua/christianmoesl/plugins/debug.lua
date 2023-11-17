@@ -30,10 +30,50 @@ return {
     cond = require("christianmoesl.util").is_full_profile,
     -- stylua: ignore
     keys = {
-      { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
+      { "<leader>du", function() require("dapui").toggle({ layout = 1 }) end, desc = "Dap UI" },
+      { "<leader>dU", function() require("dapui").toggle({ layout = 2 }) end, desc = "Dap UI (full)" },
       { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
     },
-    opts = {},
+    opts = {
+      layouts = {
+        {
+          elements = {
+            -- {
+            --   id = "repl",
+            --   size = 0.5,
+            -- },
+            {
+              id = "console",
+              size = 1,
+            },
+          },
+          position = "bottom",
+          size = 20,
+        },
+        {
+          elements = {
+            {
+              id = "scopes",
+              size = 0.25,
+            },
+            {
+              id = "breakpoints",
+              size = 0.25,
+            },
+            {
+              id = "stacks",
+              size = 0.25,
+            },
+            {
+              id = "watches",
+              size = 0.25,
+            },
+          },
+          position = "left",
+          size = 40,
+        },
+      },
+    },
     config = function(_, opts)
       -- setup dap config by VsCode launch.json file
       -- require("dap.ext.vscode").load_launchjs()
@@ -41,7 +81,7 @@ return {
       local dapui = require("dapui")
       dapui.setup(opts)
       dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
+        dapui.open({ layout = 1 })
       end
       dap.listeners.before.event_terminated["dapui_config"] = function()
         dapui.close({})
