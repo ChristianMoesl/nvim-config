@@ -1,6 +1,3 @@
--- This file is automatically loaded
-local Util = require("christianmoesl.util")
-
 -- Resize window using <ctrl> arrow keys
 vim.keymap.set(
   "n",
@@ -132,35 +129,21 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 vim.keymap.set("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
--- if not Util.has("trouble.nvim") then
---  vim.keymap.set("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
---  vim.keymap.set("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
--- end
+vim.keymap.set("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
+vim.keymap.set("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 
 -- toggle options
--- map("n", "<leader>us", function() Util.toggle("spell") end, { desc = "Toggle Spelling" })
--- map("n", "<leader>uw", function() Util.toggle("wrap") end, { desc = "Toggle Word Wrap" })
--- vim.keymap.set("n", "<leader>ud", Util.toggle_diagnostics, { desc = "Toggle Diagnostics" })
--- local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
--- map("n", "<leader>uc", function() Util.toggle("conceallevel", false, {0, conceallevel}) end, { desc = "Toggle Conceal" })
--- if vim.lsp.inlay_hint then
---  map("n", "<leader>uh", function() vim.lsp.inlay_hint(0, nil) end, { desc = "Toggle Inlay Hints" })
--- end
+if vim.lsp.inlay_hint then
+  vim.keymap.set(
+    "n",
+    "<leader>uh",
+    function() vim.lsp.inlay_hint(0, nil) end,
+    { desc = "Toggle Inlay Hints" }
+  )
+end
 
 -- quit
 vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
-
--- floating terminal
-local lazyterm = function() Util.float_term(nil, { cwd = Util.get_root() }) end
--- vim.keymap.set("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
-vim.keymap.set(
-  "n",
-  "<leader>fT",
-  function() Util.float_term() end,
-  { desc = "Terminal (cwd)" }
-)
-vim.keymap.set("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
-vim.keymap.set("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 
 -- Terminal Mappings
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
@@ -188,8 +171,6 @@ vim.keymap.set(
   "<cmd>wincmd l<cr>",
   { desc = "Go to right window" }
 )
--- vim.keymap.set("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
--- vim.keymap.set("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
 
 -- windows
 vim.keymap.set(

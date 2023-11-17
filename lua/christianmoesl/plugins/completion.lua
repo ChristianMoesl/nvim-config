@@ -39,7 +39,6 @@ return {
       "zbirenbaum/copilot-cmp",
       "saadparwaiz1/cmp_luasnip",
       "onsails/lspkind.nvim",
-      "L3MON4D3/LuaSnip",
     },
     opts = function()
       vim.api.nvim_set_hl(
@@ -68,8 +67,8 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.config.disable,
-          -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          -- ["<CR>"] = cmp.config.disable,
+          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<S-CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,

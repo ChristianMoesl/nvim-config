@@ -1,5 +1,24 @@
+---@param buffer integer
+---@param method string
+local function has_method(buffer, method)
+  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  for _, client in ipairs(clients) do
+    if client.supports_method(method) then
+      return true
+    end
+  end
+  return false
+end
+
+---@param next boolean next or previous
+---@param severity string|nil diagnostic severity
+local function diagnostic_goto(next, severity)
+  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+  severity = severity and vim.diagnostic.severity[severity] or nil
+  return function() go({ severity = severity }) end
+end
+
 local function map_lsp_keys(client, buffer)
-  local util = require("christianmoesl.util")
   local keymaps = {
     { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
     { "K", vim.lsp.buf.hover, desc = "Hover" },
@@ -34,12 +53,12 @@ local function map_lsp_keys(client, buffer)
       function() require("telescope.builtin").lsp_references() end,
       desc = "References",
     },
-    { "]d", util.diagnostic_goto(true), desc = "Next Diagnostic" },
-    { "[d", util.diagnostic_goto(false), desc = "Prev Diagnostic" },
-    { "]e", util.diagnostic_goto(true, "ERROR"), desc = "Next Error" },
-    { "[e", util.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
-    { "]w", util.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
-    { "[w", util.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
+    { "]d", diagnostic_goto(true), desc = "Next Diagnostic" },
+    { "[d", diagnostic_goto(false), desc = "Prev Diagnostic" },
+    { "]e", diagnostic_goto(true, "ERROR"), desc = "Next Error" },
+    { "[e", diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
+    { "]w", diagnostic_goto(true, "WARN"), desc = "Next Warning" },
+    { "[w", diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
     {
       "<leader>ca",
       vim.lsp.buf.code_action,
@@ -51,7 +70,7 @@ local function map_lsp_keys(client, buffer)
   }
 
   for _, keys in pairs(keymaps) do
-    if not keys.has or util.has(buffer, keys.has) then
+    if not keys.has or has_method(buffer, keys.has) then
       local keys_opts = {
         silent = true,
         buffer = buffer,

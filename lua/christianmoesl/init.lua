@@ -11,8 +11,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("christianmoesl.config.options")
-require("christianmoesl.config.keymaps")
+require("christianmoesl.options")
+require("christianmoesl.keymaps")
 
 vim.cmd("packadd cfilter")
 

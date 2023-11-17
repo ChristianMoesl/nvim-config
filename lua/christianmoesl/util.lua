@@ -16,22 +16,6 @@ function M.on_attach(on_attach)
   })
 end
 
-function M.has(buffer, method)
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
-  for _, client in ipairs(clients) do
-    if client.supports_method(method) then
-      return true
-    end
-  end
-  return false
-end
-
-function M.diagnostic_goto(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function() go({ severity = severity }) end
-end
-
 -- returns the root directory based on:
 -- * lsp workspace folders
 -- * lsp root_dir
@@ -76,7 +60,7 @@ function M.get_root()
 end
 
 -- this will return a function that calls telescope.
--- cwd will default to lazyvim.util.get_root
+-- cwd will default to M.get_root
 -- for `files`, git_files or find_files will be chosen depending on .git
 function M.telescope(builtin, opts)
   local params = { builtin = builtin, opts = opts }
@@ -113,16 +97,6 @@ function M.telescope(builtin, opts)
 
     require("telescope.builtin")[builtin](opts)
   end
-end
-
----@param name string
-function M.opts(name)
-  local plugin = require("lazy.core.config").plugins[name]
-  if not plugin then
-    return {}
-  end
-  local Plugin = require("lazy.core.plugin")
-  return Plugin.values(plugin, "opts", false)
 end
 
 return M
