@@ -95,17 +95,13 @@ return {
     },
     config = function(_, opts)
       local function attach_jdtls()
-        local root_dir =
-          require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" })
+        local root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" })
 
         local project_name = root_dir and vim.fs.basename(root_dir)
 
         if project_name then
           -- Where are the config and workspace dirs for a project?
-          local jdtls_config_dir = vim.fn.stdpath("cache")
-            .. "/jdtls/"
-            .. project_name
-            .. "/config"
+          local jdtls_config_dir = vim.fn.stdpath("cache") .. "/jdtls/" .. project_name .. "/config"
           local jdtls_workspace_dir = vim.fn.stdpath("cache")
             .. "/jdtls/"
             .. project_name
@@ -137,8 +133,7 @@ return {
         local java_dbg_pkg = mason_registry.get_package("java-debug-adapter")
         local java_dbg_path = java_dbg_pkg:get_install_path()
         local jar_patterns = {
-          java_dbg_path
-            .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+          java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
         }
 
         -- java-test also depends on java-debug-adapter.
@@ -236,26 +231,5 @@ return {
         },
       })
     end,
-  },
-  {
-    url = "https://gitlab.com/schrieveslaach/sonarlint.nvim.git",
-    dependencies = "nvim-jdtls",
-    ft = { "java" },
-    opts = {
-      server = {
-        cmd = {
-          "sonarlint-language-server",
-          "-stdio",
-          "-analyzers",
-          vim.fn.stdpath("data")
-            .. "/mason/share/sonarlint-analyzers/sonarjava.jar",
-        },
-      },
-      filetypes = {
-        -- Requires nvim-jdtls, otherwise an error message will be printed
-        "java",
-      },
-    },
-    config = function(_, opts) require("sonarlint").setup(opts) end,
   },
 }
