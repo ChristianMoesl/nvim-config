@@ -47,9 +47,7 @@ local function create_pr_previewer()
   local previewers = require("telescope.previewers")
   return previewers.new_termopen_previewer({
     ---@param entry PrEntry
-    get_command = function(entry, _)
-      return { "gh", "pr", "view", entry.value.id }
-    end,
+    get_command = function(entry, _) return { "gh", "pr", "view", entry.value.id } end,
   })
 end
 
@@ -104,10 +102,7 @@ local function switch_branch(prompt_bufnr)
     },
     on_exit = function(_, return_val)
       if return_val == 0 then
-        vim.notify(
-          "Switched to branch " .. selection.value.branch_ref,
-          vim.log.levels.INFO
-        )
+        vim.notify("Switched to branch " .. selection.value.branch_ref, vim.log.levels.INFO)
       else
         vim.notify(
           "Failed to switch to branch " .. selection.value.branch_ref,
@@ -135,9 +130,7 @@ local function switch_pr(opts)
       }),
       sorter = conf.generic_sorter(opts),
       attach_mappings = function(prompt_bufnr, _)
-        actions.select_default:replace(
-          function() switch_branch(prompt_bufnr) end
-        )
+        actions.select_default:replace(function() switch_branch(prompt_bufnr) end)
         return true
       end,
     })
@@ -169,8 +162,7 @@ local function execute(command_args)
       else
         level = vim.log.levels.ERROR
       end
-      local msg = table.concat(job:result(), "\n")
-        .. table.concat(job:stderr_result(), "\n")
+      local msg = table.concat(job:result(), "\n") .. table.concat(job:stderr_result(), "\n")
       vim.notify(msg, level)
     end,
   }):start()
@@ -192,6 +184,11 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     keys = {
+      {
+        "<leader>gv",
+        function() execute({ "gh", "browse" }) end,
+        desc = "Browse GitHub repo",
+      },
       {
         "<leader>gpc",
         function() execute("gprc") end,
@@ -216,6 +213,11 @@ return {
         "<leader>gpR",
         function() execute("gprmrabs") end,
         desc = "Make pull request ready for CDM & ABS",
+      },
+      {
+        "<leader>gpv",
+        function() execute({ "gh", "pr", "view", "--web" }) end,
+        desc = "View Pull Request in web browser",
       },
       {
         "<leader>gpv",
