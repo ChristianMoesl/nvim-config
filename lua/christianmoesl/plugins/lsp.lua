@@ -14,11 +14,11 @@ end
 ---@param severity string|nil diagnostic severity
 local function diagnostic_goto(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function() go({ severity = severity }) end
+  return function() go({ severity = severity and vim.diagnostic.severity[severity] or nil }) end
 end
 
-local function map_lsp_keys(client, buffer)
+---@param buffer integer
+local function map_lsp_keys(_, buffer)
   local keymaps = {
     { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
     { "K", vim.lsp.buf.hover, desc = "Hover" },
@@ -42,9 +42,7 @@ local function map_lsp_keys(client, buffer)
     },
     {
       "gd",
-      function()
-        require("telescope.builtin").lsp_definitions({ reuse_win = true })
-      end,
+      function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
       desc = "Goto Definition",
       has = "definition",
     },

@@ -1,5 +1,3 @@
-local Util = require("lazy.core.util")
-
 return {
   -- formatters
   {
@@ -12,10 +10,10 @@ return {
         "<leader>uf",
         function()
           if vim.g.disable_autoformat then
-            Util.info("Enabled format on save", { title = "Format" })
+            vim.notify("Enabled format on save", vim.log.levels.INFO, { title = "Format" })
             vim.g.disable_autoformat = false
           else
-            Util.info("Disabled format on save", { title = "Format" })
+            vim.notify("Disabled format on save", vim.log.levels.INFO, { title = "Format" })
             vim.g.disable_autoformat = true
           end
         end,
