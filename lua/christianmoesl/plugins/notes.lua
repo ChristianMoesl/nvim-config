@@ -25,9 +25,7 @@ return {
     keys = {
       {
         "<leader>sn",
-        function()
-          require("telescope.builtin").find_files({ cwd = notes_directory })
-        end,
+        function() require("telescope.builtin").find_files({ cwd = notes_directory }) end,
         desc = "Notes",
       },
     },

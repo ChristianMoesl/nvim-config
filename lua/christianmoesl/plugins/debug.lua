@@ -1,8 +1,6 @@
 ---@param config {args?:string[]|fun():string[]?}
 local function get_args(config)
-  local args = type(config.args) == "function" and (config.args() or {})
-    or config.args
-    or {}
+  local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
   config = vim.deepcopy(config)
   ---@cast args string[]
   config.args = function()
@@ -80,15 +78,9 @@ return {
       local dap = require("dap")
       local dapui = require("dapui")
       dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({ layout = 1 })
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
-      end
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open({ layout = 1 }) end
+      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close({}) end
+      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close({}) end
     end,
   },
   {

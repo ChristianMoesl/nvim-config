@@ -108,8 +108,7 @@ return {
           },
         },
       }
-      opts.defaults =
-        vim.tbl_deep_extend("force", opts.defaults or {}, defaults)
+      opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, defaults)
 
       require("telescope").setup(opts)
       require("telescope").load_extension("ui-select")
