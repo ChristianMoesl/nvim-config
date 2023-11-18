@@ -41,20 +41,16 @@ return {
       "onsails/lspkind.nvim",
     },
     opts = function()
-      vim.api.nvim_set_hl(
-        0,
-        "CmpGhostText",
-        { link = "Comment", default = true }
-      )
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
       return {
         completion = {
-          keyword_length = 2,
+          -- keyword_length = 2,
         },
         performance = {
-          debounce = 100,
-          throttle = 50,
+          debounce = 200,
+          throttle = 80,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({
