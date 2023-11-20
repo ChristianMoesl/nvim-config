@@ -75,6 +75,7 @@ return {
               "org.mockito.Mockito.*",
             },
             filteredTypes = {
+              "java.awt.*",
               "com.sun.*",
               "io.micrometer.shaded.*",
             },
