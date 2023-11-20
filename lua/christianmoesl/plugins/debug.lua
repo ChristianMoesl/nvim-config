@@ -28,7 +28,7 @@ return {
     cond = require("christianmoesl.util").is_full_profile,
     -- stylua: ignore
     keys = {
-      { "<leader>du", function() require("dapui").toggle({ layout = 1 }) end, desc = "Dap UI" },
+      { "<leader>du", function() require("dapui").toggle({ layout = 1 }) end, desc = "Dap UI " },
       { "<leader>dU", function() require("dapui").toggle({ layout = 2 }) end, desc = "Dap UI (full)" },
       { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
     },
@@ -36,10 +36,6 @@ return {
       layouts = {
         {
           elements = {
-            -- {
-            --   id = "repl",
-            --   size = 0.5,
-            -- },
             {
               id = "console",
               size = 1,
