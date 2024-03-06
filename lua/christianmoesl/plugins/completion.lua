@@ -46,11 +46,11 @@ return {
       local defaults = require("cmp.config.default")()
       return {
         completion = {
-          -- keyword_length = 2,
+          keyword_length = 2,
         },
         performance = {
-          debounce = 200,
-          throttle = 80,
+          debounce = 300,
+          throttle = 150,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({
@@ -64,7 +64,8 @@ return {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           -- ["<CR>"] = cmp.config.disable,
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<S-CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,

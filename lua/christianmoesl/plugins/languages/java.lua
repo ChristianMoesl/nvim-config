@@ -79,6 +79,7 @@ return {
               "com.sun.*",
               "io.micrometer.shaded.*",
             },
+            matchCase = "FIRSTLETTER",
           },
           edit = {
             validateAllOpenBuffersOnChanges = true,
@@ -153,7 +154,7 @@ return {
         -- Existing server will be reused if the root_dir matches.
         require("jdtls").start_or_attach(opts, nil, {
           flags = {
-            debounce_text_changes = 150,
+            debounce_text_changes = 300,
           },
         })
         require("jdtls").setup_dap(opts.dap)
