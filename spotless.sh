@@ -1,9 +1,7 @@
 #!/usr/bin/env zsh
 
-contents=$(cat -)
-
 exec 3>&1                    # Save the place that stdout (1) points to.
-output=$(echo $contents | gradle spotlessApply \
+output=$(cat - | gradle spotlessApply \
   --quiet \
   -PspotlessIdeHook="$1" \
   -PspotlessIdeHookUseStdIn \
