@@ -64,7 +64,7 @@ local function create_entry_maker()
     },
   })
 
-  ---@param entry PrEntry keys:
+  ---@param entry PrEntry
   local make_display = function(entry)
     return displayer({
       { "#" .. entry.value.id, "TelescopeResultsIdentifier" },
