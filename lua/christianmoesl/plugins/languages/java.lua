@@ -189,6 +189,12 @@ return {
             function() require("jdtls").test_nearest_method() end,
             { desc = "Test Nearest Method" }
           )
+          vim.keymap.set(
+            "n",
+            "<leader>cw",
+            function() require("jdtls").update_project_config() end,
+            { desc = "Wipe and restart LSP" }
+          )
         end,
       })
 

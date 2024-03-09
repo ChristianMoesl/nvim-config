@@ -33,6 +33,7 @@ return {
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     },
+    ---@type LazyKeysSpec[]
     keys = {
       {
         "<leader>ud",
@@ -44,14 +45,12 @@ return {
         "<cmd>Noice telescope<cr>",
         desc = "Notification",
       },
-    },
-    keymaps = {
-      vim.keymap.set(
-        "c",
+      {
         "<S-Enter>",
         function() require("noice").redirect(vim.fn.getcmdline()) end,
-        { desc = "Redirect Cmdline" }
-      ),
+        desc = "Redirect Cmdline",
+        mode = "c",
+      },
     },
     opts = {
       lsp = {

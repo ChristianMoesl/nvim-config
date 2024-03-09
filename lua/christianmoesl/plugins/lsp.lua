@@ -84,6 +84,7 @@ local function map_lsp_keys(_, buffer)
       has = "codeAction",
     },
     { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
+    { "<leader>cR", "<cmd>LspRestart<cr>", desc = "Restart LSP" },
   }
 
   for _, keys in pairs(keymaps) do
