@@ -48,7 +48,7 @@ local function map_lsp_keys(_, buffer)
     {
       "gD",
       function() vim.lsp.buf.declaration() end,
-      "Goto Declaration",
+      desc = "Goto Declaration",
     },
     {
       "gt",
@@ -58,12 +58,12 @@ local function map_lsp_keys(_, buffer)
     {
       "<leader>ss",
       function() require("telescope.builtin").lsp_document_symbols() end,
-      "Document Symbols",
+      desc = "Document Symbols",
     },
     {
       "<leader>sS",
       function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end,
-      "Workspace Symbols",
+      desc = "Workspace Symbols",
     },
     {
       "sr",

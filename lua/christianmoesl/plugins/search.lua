@@ -91,6 +91,16 @@ return {
         desc = "Code References",
       },
       {
+        "<leader>si",
+        function() builtin().lsp_incoming_calls() end,
+        desc = "Incoming Calls",
+      },
+      {
+        "<leader>so",
+        function() builtin().lsp_outgoing_calls() end,
+        desc = "Outgoing Calls",
+      },
+      {
         "<leader>sk",
         "<cmd>Telescope keymaps<cr>",
         desc = "Keymaps",
