@@ -8,6 +8,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
+      "folke/noice.nvim",
     },
     cond = require("christianmoesl.util").is_full_profile,
     keys = {
@@ -94,6 +95,16 @@ return {
         "<cmd>Telescope keymaps<cr>",
         desc = "Keymaps",
       },
+      {
+        "<leader>sm",
+        function() builtin().man_pages() end,
+        desc = "Man pages",
+      },
+      {
+        "<leader>sh",
+        function() builtin().help_tags() end,
+        desc = "Help",
+      },
     },
     opts = {},
     config = function(_, opts)
@@ -112,6 +123,7 @@ return {
 
       require("telescope").setup(opts)
       require("telescope").load_extension("ui-select")
+      require("telescope").load_extension("noice")
     end,
   },
 }

@@ -20,8 +20,7 @@ end
 ---@param buffer integer
 local function map_lsp_keys(_, buffer)
   local keymaps = {
-    { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-    { "K", vim.lsp.buf.hover, desc = "Hover" },
+    { "K", vim.lsp.buf.hover, desc = "Hover Documentation" },
     {
       "gK",
       vim.lsp.buf.signature_help,
@@ -36,7 +35,7 @@ local function map_lsp_keys(_, buffer)
       has = "signatureHelp",
     },
     {
-      "gi",
+      "gI",
       vim.lsp.buf.implementation,
       desc = "Goto implementation",
     },
@@ -45,6 +44,26 @@ local function map_lsp_keys(_, buffer)
       function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
       desc = "Goto Definition",
       has = "definition",
+    },
+    {
+      "gD",
+      function() vim.lsp.buf.declaration() end,
+      "Goto Declaration",
+    },
+    {
+      "gt",
+      function() require("telescope.builtin").lsp_type_definitions() end,
+      desc = "Type Definition",
+    },
+    {
+      "<leader>ss",
+      function() require("telescope.builtin").lsp_document_symbols() end,
+      "Document Symbols",
+    },
+    {
+      "<leader>sS",
+      function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end,
+      "Workspace Symbols",
     },
     {
       "sr",

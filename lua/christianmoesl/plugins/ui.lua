@@ -33,6 +33,18 @@ return {
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     },
+    keys = {
+      {
+        "<leader>ud",
+        "<cmd>Noice dismiss<cr>",
+        desc = "Dismiss notifications",
+      },
+      {
+        "<leader>sN",
+        "<cmd>Noice telescope<cr>",
+        desc = "Notification",
+      },
+    },
     keymaps = {
       vim.keymap.set(
         "c",
