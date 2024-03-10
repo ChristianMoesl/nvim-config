@@ -20,6 +20,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = { signs = false },
   },
+  -- Use gx to open links or references in the browser
   {
     "ChristianMoesl/gx.nvim",
     branch = "main",
@@ -29,7 +30,6 @@ return {
     },
     opts = {
       handlers = {
-        ---@type gx.GxHandler
         jira = {
           handle = function(mode, line, _)
             local helper = require("gx.helper")

@@ -1,12 +1,28 @@
 return {
+
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    version = false,
-    lazy = false,
-    dependencies = {},
+    "echasnovski/mini.surround",
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+    event = "VeryLazy",
+    opts = function()
+      return {
+        -- Add custom surroundings to be used on top of builtin ones. For more
+        -- information with examples, see `:h MiniSurround.config`.
+        custom_surroundings = nil,
+        -- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
+        highlight_duration = 500,
+        -- Number of lines within which surrounding is searched
+        n_lines = 20,
+        -- Whether to disable showing non-error feedback
+        silent = false,
+      }
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
     version = false,
     lazy = false,
     build = ":TSUpdate",
@@ -49,26 +65,32 @@ return {
             ["if"] = "@function.inner",
             ["ac"] = "@class.outer",
             ["ic"] = "@class.inner",
+            ["aC"] = "@comment.outer",
+            ["iC"] = "@comment.inner",
           },
         },
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
-            ["]m"] = "@function.outer",
-            ["]]"] = "@class.outer",
+            ["]f"] = "@function.outer",
+            ["]c"] = "@class.outer",
+            ["]C"] = "@comment.outer",
           },
           goto_next_end = {
-            ["]M"] = "@function.outer",
-            ["]["] = "@class.outer",
+            ["]F"] = "@function.outer",
+            ["]c"] = "@class.outer",
+            ["]C"] = "@comment.outer",
           },
           goto_previous_start = {
-            ["[m"] = "@function.outer",
-            ["[["] = "@class.outer",
+            ["[f"] = "@function.outer",
+            ["[c"] = "@class.outer",
+            ["[C"] = "@comment.outer",
           },
           goto_previous_end = {
-            ["[M"] = "@function.outer",
-            ["[]"] = "@class.outer",
+            ["[f"] = "@function.outer",
+            ["[c"] = "@class.outer",
+            ["[C"] = "@comment.outer",
           },
         },
         swap = {
