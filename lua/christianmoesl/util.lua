@@ -5,13 +5,13 @@ M.root_patterns = { ".git" }
 function M.is_minimum_profile() return os.getenv("NVIM_PROFILE") == "MINIMUM" end
 function M.is_full_profile() return not M.is_minimum_profile() end
 
----@param on_attach fun(client, buffer)
+---@param on_attach fun(event: object, client: string, buffer: number)
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local buffer = args.buf
       local client = vim.lsp.get_client_by_id(args.data.client_id)
-      on_attach(client, buffer)
+      on_attach(args, client, buffer)
     end,
   })
 end

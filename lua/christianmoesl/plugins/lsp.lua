@@ -17,8 +17,9 @@ local function diagnostic_goto(next, severity)
   return function() go({ severity = severity and vim.diagnostic.severity[severity] or nil }) end
 end
 
+---@param event object
 ---@param buffer integer
-local function map_lsp_keys(_, buffer)
+local function map_lsp_keys(event, client, buffer)
   local keymaps = {
     { "K", vim.lsp.buf.hover, desc = "Hover Documentation" },
     {
@@ -97,6 +98,24 @@ local function map_lsp_keys(_, buffer)
       vim.keymap.set(keys.mode or "n", keys[1], keys[2], keys_opts)
     end
   end
+
+  -- The following two autocommands are used to highlight references of the
+  -- word under your cursor when your cursor rests there for a little while.
+  --    See `:help CursorHold` for information about when this is executed
+  --
+  -- When you move your cursor, the highlights will be cleared (the second autocommand).
+  local client = vim.lsp.get_client_by_id(event.data.client_id)
+  if client and client.server_capabilities.documentHighlightProvider then
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      buffer = event.buf,
+      callback = vim.lsp.buf.document_highlight,
+    })
+
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      buffer = event.buf,
+      callback = vim.lsp.buf.clear_references,
+    })
+  end
 end
 
 return {
@@ -133,7 +152,6 @@ return {
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
-      { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
       "nvim-telescope/telescope.nvim",
     },
@@ -163,9 +181,22 @@ return {
       -- setup formatting and keymaps
       require("christianmoesl.util").on_attach(map_lsp_keys)
 
+      -- enable CMP capabilities
+      local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        opts.capabilities,
+        lsp_capabilities,
+        require("cmp_nvim_lsp").default_capabilities()
+      )
+
+      -- LSP servers and clients are able to communicate to each other what features they support.
+      --  By default, Neovim doesn't support everything that is in the LSP Specification.
+      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       for server, _ in pairs(opts.servers) do
         local server_opts = vim.tbl_deep_extend("force", {
-          capabilities = vim.deepcopy(opts.capabilities),
+          capabilities = vim.deepcopy(capabilities),
         }, opts.servers[server] or {})
 
         require("lspconfig")[server].setup(server_opts)

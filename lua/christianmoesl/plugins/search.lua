@@ -8,6 +8,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
+      "nvim-telescope/telescope-media-files.nvim",
       "folke/noice.nvim",
     },
     cond = require("christianmoesl.util").is_full_profile,
@@ -128,12 +129,21 @@ return {
             ["<M-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
           },
         },
+        extensions = {
+          media_files = {
+            -- filetypes whitelist
+            -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+            -- find command (defaults to `fd`)
+            find_cmd = "rg",
+          },
+        },
       }
       opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, defaults)
 
       require("telescope").setup(opts)
       require("telescope").load_extension("ui-select")
       require("telescope").load_extension("noice")
+      require("telescope").load_extension("media_files")
     end,
   },
 }

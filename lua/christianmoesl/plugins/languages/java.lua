@@ -118,9 +118,10 @@ return {
         end
 
         -- enable CMP capabilities
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
         opts.capabilities = vim.tbl_deep_extend(
           "force",
-          opts.capabilities or {},
+          capabilities,
           require("cmp_nvim_lsp").default_capabilities({
             snippetSupport = false,
           })

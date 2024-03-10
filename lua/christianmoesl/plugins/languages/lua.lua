@@ -20,6 +20,11 @@ return {
     end,
   },
   {
+    "folke/neodev.nvim",
+    opts = {},
+    priority = 60, -- has to be loaded before lspconfig
+  },
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
@@ -27,6 +32,7 @@ return {
           settings = {
             Lua = {
               runtime = { version = "LuaJIT" },
+              telemetry = { enabled = false },
               workspace = {
                 checkThirdParty = false,
                 -- Tells lua_ls where to find all the Lua files that you have loaded
