@@ -173,7 +173,6 @@ return {
       capabilities = {},
       autoformat = true,
       -- LSP Server Settings
-      ---@type lspconfig.options
       servers = {},
       setup = {},
     },
