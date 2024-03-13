@@ -45,7 +45,8 @@ return {
       cmd = {
         "jdtls",
         string.format(
-          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok.jar",
+          -- TODO: remove this workaround (currently we need to patch lombok with the latest edge version to make it work)
+          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok-edge.jar",
           vim.fn.stdpath("data")
         ),
         "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
@@ -61,6 +62,11 @@ return {
           referencesCodeLens = { enabled = true },
           references = {
             includeDecompiledSources = true,
+          },
+          inlayHints = {
+            parameterNames = {
+              enabled = "all", -- literals, all, none
+            },
           },
           jdt = {
             ls = {
@@ -193,7 +199,7 @@ return {
           vim.keymap.set(
             "n",
             "<leader>cw",
-            function() require("jdtls").update_project_config() end,
+            function() require("jdtls.setup").wipe_data_and_restart() end,
             { desc = "Wipe and restart LSP" }
           )
         end,
