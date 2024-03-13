@@ -34,7 +34,7 @@ return {
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
       highlight = { enable = true },
-      indent = { enable = true },
+      indent = { enable = false },
       ensure_installed = {
         "bash",
         "html",
