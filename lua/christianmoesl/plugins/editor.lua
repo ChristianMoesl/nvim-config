@@ -22,7 +22,7 @@ return {
   },
   -- Use gx to open links or references in the browser
   {
-    "ChristianMoesl/gx.nvim",
+    "chrishrb/gx.nvim",
     branch = "main",
     event = "VeryLazy",
     keys = {
