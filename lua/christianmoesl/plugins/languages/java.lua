@@ -41,7 +41,11 @@ return {
       "rcarriga/nvim-dap-ui",
     },
     ft = { "java" },
+    ---@type lsp.StartOpts
     opts = {
+      flags = {
+        debounce_text_changes = 300, -- default is 150
+      },
       cmd = {
         "jdtls",
         string.format(
@@ -124,14 +128,12 @@ return {
         end
 
         -- enable CMP capabilities
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        opts.capabilities = vim.tbl_deep_extend(
-          "force",
-          capabilities,
-          require("cmp_nvim_lsp").default_capabilities({
-            snippetSupport = false,
-          })
-        )
+        local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+        local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities({
+          snippetSupport = false,
+        })
+        opts.capabilities =
+          vim.tbl_deep_extend("force", opts.capabilities, lsp_capabilities, cmp_capabilities)
 
         -- Find the extra bundles that should be passed on the jdtls command-line
         -- if nvim-dap is enabled with java debug/test.
@@ -159,11 +161,7 @@ return {
         end
 
         -- Existing server will be reused if the root_dir matches.
-        require("jdtls").start_or_attach(opts, nil, {
-          flags = {
-            debounce_text_changes = 300,
-          },
-        })
+        require("jdtls").start_or_attach(opts)
         require("jdtls").setup_dap(opts.dap)
       end
 

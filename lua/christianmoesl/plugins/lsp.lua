@@ -17,9 +17,9 @@ local function diagnostic_goto(next, severity)
   return function() go({ severity = severity and vim.diagnostic.severity[severity] or nil }) end
 end
 
----@param event object
 ---@param buffer integer
-local function map_lsp_keys(event, client, buffer)
+---@param client integer
+local function map_lsp_keys(buffer, client)
   local keymaps = {
     { "K", vim.lsp.buf.hover, desc = "Hover Documentation" },
     {
@@ -104,28 +104,35 @@ local function map_lsp_keys(event, client, buffer)
   --    See `:help CursorHold` for information about when this is executed
   --
   -- When you move your cursor, the highlights will be cleared (the second autocommand).
-  local client = vim.lsp.get_client_by_id(event.data.client_id)
-  if client and client.server_capabilities.documentHighlightProvider then
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-      buffer = event.buf,
-      callback = vim.lsp.buf.document_highlight,
-    })
+  vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+    buffer = buffer,
+    callback = function()
+      ---@diagnostic disable-next-line: undefined-field
+      if client and client.server_capabilities.documentHighlightProvider then
+        vim.lsp.buf.document_highlight()
+      end
+    end,
+  })
 
-    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-      buffer = event.buf,
-      callback = vim.lsp.buf.clear_references,
-    })
-  end
+  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+    buffer = buffer,
+    callback = function()
+      ---@diagnostic disable-next-line: undefined-field
+      if client and client.server_capabilities.documentHighlightProvider then
+        vim.lsp.buf.clear_references()
+      end
+    end,
+  })
 end
 
 return {
-  -- add any tools you want to have installed below
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
     cond = require("christianmoesl.util").is_full_profile,
     build = ":MasonUpdate",
     opts = {
+      -- add any tools you want to have installed below
       ensure_installed = {
         "codespell",
         "shellcheck",
@@ -135,16 +142,16 @@ return {
     ---@param opts MasonSettings | {ensure_installed: string[]}
     config = function(_, opts)
       require("mason").setup(opts)
-      local mr = require("mason-registry")
+      local registry = require("mason-registry")
       local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
+          local package = registry.get_package(tool)
+          if not package:is_installed() then
+            package:install()
           end
         end
       end
-      mr.refresh(ensure_installed)
+      registry.refresh(ensure_installed)
     end,
   },
   {
@@ -178,16 +185,18 @@ return {
     },
     config = function(_, opts)
       -- setup formatting and keymaps
-      require("christianmoesl.util").on_attach(map_lsp_keys)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(event)
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          map_lsp_keys(event.buf, client)
+        end,
+      })
 
       -- enable CMP capabilities
       local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        opts.capabilities,
-        lsp_capabilities,
-        require("cmp_nvim_lsp").default_capabilities()
-      )
+      local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local capabilities =
+        vim.tbl_deep_extend("force", lsp_capabilities, cmp_capabilities, opts.capabilities)
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP Specification.
@@ -197,35 +206,6 @@ return {
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, opts.servers[server] or {})
-
-        local mason_registry = require("mason-registry")
-        local has_volar, volar = pcall(mason_registry.get_package, "vue-language-server")
-
-        -- If server `volar` and `tsserver` exists, add `@vue/typescript-plugin` to `tsserver`
-        if opts.servers.volar ~= nil and opts.servers.tsserver ~= nil and has_volar then
-          local tsserver = opts.servers.tsserver or {} -- Ensure tsserver is initialized
-          tsserver.init_options = tsserver.init_options or {} -- Ensure init_options is initialized
-          tsserver.init_options.plugins = tsserver.init_options.plugins or {} -- Ensure plugins is initialized
-
-          -- Even for now can use
-          local vue_ts_plugin_path = volar:get_install_path()
-            .. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
-          -- after volar 2.0.7
-          -- local vue_ts_plugin_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/typescript-plugin'
-
-          local vue_plugin = {
-            name = "@vue/typescript-plugin",
-            -- Maybe a function to get the location of the plugin is better?
-            -- e.g. pnpm fallback to nvm fallback to default node path
-            location = vue_ts_plugin_path,
-            languages = { "vue" },
-          }
-
-          -- Append the plugin to the `tsserver` server
-          vim.list_extend(tsserver.init_options.plugins, { vue_plugin })
-
-          opts.servers.tsserver = tsserver
-        end
 
         require("lspconfig")[server].setup(server_opts)
       end

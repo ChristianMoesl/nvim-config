@@ -20,12 +20,12 @@ return {
     end,
   },
   {
-    "folke/neodev.nvim",
-    opts = {},
-    priority = 60, -- has to be loaded before lspconfig
-  },
-  {
     "neovim/nvim-lspconfig",
+    dependencies = {
+      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
+      -- used for completion, annotations and signatures of Neovim apis
+      { "folke/neodev.nvim", opts = {} },
+    },
     opts = {
       servers = {
         lua_ls = {
@@ -41,8 +41,6 @@ return {
                   "${3rd}/luv/library",
                   unpack(vim.api.nvim_get_runtime_file("", true)),
                 },
-                -- If lua_ls is really slow on your computer, you can try this instead:
-                -- library = { vim.env.VIMRUNTIME },
               },
               completion = {
                 callSnippet = "Replace",
