@@ -230,7 +230,7 @@ return {
           -- When cwd is not found, don't run the formatter (default false)
           -- require_cwd = true,
           -- When returns false, the formatter will not be used
-          ---@param ctx conform.Context
+          ----@param ctx conform.Context
           -- condition = function(ctx)
           --   return true
           -- return vim.fs.basename(ctx.filename) ~= ".java"

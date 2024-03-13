@@ -7,15 +7,9 @@ return {
     opts = {
       flavour = "mocha",
       integrations = {
-        alpha = true,
         cmp = true,
-        flash = false,
         gitsigns = true,
-        illuminate = false,
-        indent_blankline = { enabled = true },
-        lsp_trouble = false,
         mason = true,
-        mini = false,
         native_lsp = {
           enabled = true,
           underlines = {
@@ -25,13 +19,15 @@ return {
             information = { "undercurl" },
           },
         },
-        navic = { enabled = false, custom_bg = "lualine" },
         neotest = true,
         noice = true,
-        notify = false,
-        neotree = false,
-        semantic_tokens = false,
-        telescope = true,
+        dap = true,
+        dap_ui = true,
+        notify = true,
+        semantic_tokens = true,
+        telescope = {
+          enabled = true,
+        },
         treesitter = true,
         which_key = true,
       },

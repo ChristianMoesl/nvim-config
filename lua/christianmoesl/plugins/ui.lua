@@ -120,12 +120,12 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
-      "ThePrimeagen/harpoon",
       "catppuccin/nvim",
     },
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
     opts = {
+      theme = "catppuccin",
       extensions = {
         "lazy",
         "mason",

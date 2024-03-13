@@ -44,8 +44,11 @@ return {
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
+      local luasnip = require("luasnip")
+
       return {
         completion = {
+          completopt = "menu,menuone,noinsert",
           keyword_length = 2,
         },
         performance = {
@@ -53,27 +56,33 @@ return {
           throttle = 150,
         },
         mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({
-            behavior = cmp.SelectBehavior.Insert,
-          }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Insert,
-          }),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          -- ["<CR>"] = cmp.config.disable,
-          -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
+          ["<C-y>"] = cmp.mapping.confirm({
             select = true,
+            behavior = cmp.ConfirmBehavior.Replace,
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-CR>"] = function(fallback)
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-CR>"] = function(fallback) -- Close auto completion window
             cmp.abort()
             fallback()
           end,
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if luasnip.locally_jumpable(1) then
+              luasnip.jump(1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
           { name = "copilot" },
@@ -90,7 +99,7 @@ return {
         },
         sorting = defaults.sorting,
         snippet = {
-          expand = function(args) require("luasnip").lsp_expand(args.body) end,
+          expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         formatting = {
           fields = { "kind", "abbr", "menu" },
