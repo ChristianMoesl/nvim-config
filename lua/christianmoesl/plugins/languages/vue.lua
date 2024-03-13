@@ -18,6 +18,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         "vue-language-server",
         "prettier",
+        "typescript-language-server",
       })
     end,
   },
@@ -33,6 +34,12 @@ return {
             "typescriptreact",
             "vue",
           },
+        },
+        tsserver = {
+          init_options = {
+            plugins = {},
+          },
+          filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         },
       },
     },
