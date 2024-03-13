@@ -1,32 +1,56 @@
-local notes_directory = vim.fn.expand("~")
+local util = require("christianmoesl.util")
+
+local notes_directory_expanded = vim.fn.expand("~")
   .. "/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+local notes_directory = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+
+if util.is_work() then
+  notes_directory_expanded = vim.fn.expand("~") .. "Notes"
+  notes_directory = "~/Notes"
+end
 
 return {
   {
     "epwalsh/obsidian.nvim",
     cond = require("christianmoesl.util").is_full_profile,
-    event = {
-      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-      "BufReadPre "
-        .. notes_directory
-        .. "/**.md",
-      "BufNewFile " .. notes_directory .. "/**.md",
-    },
+    version = "*",
+    event = "VeryLazy",
+    -- ft = "markdown",
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+    --   "BufReadPre "
+    --     .. notes_directory
+    --     .. "/**.md",
+    --   "BufNewFile " .. notes_directory .. "/**.md",
+    -- },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    opts = {
-      dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes", -- no need to call 'vim.fn.expand' here
-    },
+    opts = function()
+      return {
+
+        workspaces = {
+          {
+            name = "workspace",
+            path = notes_directory,
+          },
+        },
+      }
+    end,
   },
   {
     "nvim-telescope/telescope.nvim",
     keys = {
       {
         "<leader>sn",
-        function() require("telescope.builtin").find_files({ cwd = notes_directory }) end,
+        function() require("telescope.builtin").find_files({ cwd = notes_directory_expanded }) end,
         desc = "Notes",
+      },
+      {
+        "<A-'>",
+        function() vim.cmd("e " .. notes_directory .. "/ToDos.md") end,
+        desc = "Open notes",
       },
     },
   },

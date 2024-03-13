@@ -1,3 +1,18 @@
+local function open_terminal()
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_name(buffer):find("^term://") ~= nil then
+      vim.api.nvim_win_set_buf(0, buffer)
+      return
+    end
+  end
+  vim.cmd(":terminal")
+end
+
+local function open_notes() end
+
+---@type Harpoon
+local harpoon
+
 return {
   {
     "folke/which-key.nvim",
@@ -9,6 +24,7 @@ return {
   },
   {
     "ThePrimeagen/harpoon",
+    branch = "harpoon2",
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
     dependencies = {
@@ -17,49 +33,42 @@ return {
     keys = {
       {
         "<leader>ha",
-        "<cmd>lua require('harpoon.mark').add_file()<cr>",
+        function() harpoon:list():append() end,
         desc = "Mark file with harpoon",
       },
       {
         "<leader>ho",
-        "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
+        function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
         desc = "Show harpoon marks",
       },
       {
         "<A-h>",
-        "<cmd>lua require('harpoon.ui').nav_file(1)<cr>",
+        function() harpoon:list():select(1) end,
         desc = "Navigate to file 1",
       },
       {
         "<A-j>",
-        "<cmd>lua require('harpoon.ui').nav_file(2)<cr>",
+        function() harpoon:list():select(2) end,
         desc = "Navigate to file 2",
       },
       {
         "<A-k>",
-        "<cmd>lua require('harpoon.ui').nav_file(3)<cr>",
+        function() harpoon:list():select(3) end,
         desc = "Navigate to file 3",
       },
       {
         "<A-l>",
-        "<cmd>lua require('harpoon.ui').nav_file(4)<cr>",
+        function() harpoon:list():select(4) end,
         desc = "Navigate to file 4",
       },
       {
         "<A-;>",
-        "<cmd>lua require('harpoon.term').gotoTerminal(1)<cr>",
-        desc = "Navigate to terminal 1",
-      },
-      {
-        "<A-'>",
-        "<cmd>lua require('harpoon.term').gotoTerminal(2)<cr>",
-        desc = "Navigate to terminal 2",
+        open_terminal,
+        desc = "Navigate terminal",
       },
     },
-    opts = {
-      menu = {
-        width = 120,
-      },
-    },
+    ---@type HarpoonPartialConfig
+    opts = {},
+    config = function(_, opts) harpoon = require("harpoon"):setup(opts) end,
   },
 }
