@@ -42,7 +42,7 @@ return {
             },
           },
           position = "bottom",
-          size = 20,
+          size = 30,
         },
         {
           elements = {
