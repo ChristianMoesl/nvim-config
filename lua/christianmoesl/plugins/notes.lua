@@ -14,16 +14,22 @@ return {
     "epwalsh/obsidian.nvim",
     cond = require("christianmoesl.util").is_full_profile,
     version = "*",
-    event = "VeryLazy",
     -- ft = "markdown",
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-    --   "BufReadPre "
-    --     .. notes_directory
-    --     .. "/**.md",
-    --   "BufNewFile " .. notes_directory .. "/**.md",
-    -- },
+    event = {
+      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+      "BufReadPre "
+        .. notes_directory
+        .. "/**.md",
+      "BufNewFile " .. notes_directory .. "/**.md",
+    },
+    keys = {
+      {
+        "<A-n>",
+        function() vim.cmd("e " .. notes_directory .. "/ToDos.md") end,
+        desc = "Open notes",
+      },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -46,11 +52,6 @@ return {
         "<leader>sn",
         function() require("telescope.builtin").find_files({ cwd = notes_directory_expanded }) end,
         desc = "Notes",
-      },
-      {
-        "<A-'>",
-        function() vim.cmd("e " .. notes_directory .. "/ToDos.md") end,
-        desc = "Open notes",
       },
     },
   },
