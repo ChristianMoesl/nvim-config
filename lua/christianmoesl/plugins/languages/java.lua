@@ -133,7 +133,7 @@ return {
           snippetSupport = false,
         })
         opts.capabilities =
-          vim.tbl_deep_extend("force", opts.capabilities, lsp_capabilities, cmp_capabilities)
+          vim.tbl_deep_extend("force", opts.capabilities or {}, lsp_capabilities, cmp_capabilities)
 
         -- Find the extra bundles that should be passed on the jdtls command-line
         -- if nvim-dap is enabled with java debug/test.
