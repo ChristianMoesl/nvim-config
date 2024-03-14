@@ -4,8 +4,8 @@ local notes_directory_expanded = vim.fn.expand("~")
   .. "/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 local notes_directory = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 
-if util.is_work() then
-  notes_directory_expanded = vim.fn.expand("~") .. "Notes"
+if util.file_exists(vim.fn.expand("~") .. "/Notes/ToDos.md") then
+  notes_directory_expanded = vim.fn.expand("~") .. "/Notes"
   notes_directory = "~/Notes"
 end
 
