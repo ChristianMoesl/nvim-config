@@ -3,6 +3,13 @@ return {
     "tpope/vim-fugitive",
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
+    keys = {
+      {
+        "<leader>go",
+        "<cmd>G<cr>",
+        desc = "Open Fugitive",
+      },
+    },
   },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
