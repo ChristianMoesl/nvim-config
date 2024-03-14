@@ -43,12 +43,12 @@ return {
       {
         "<leader>gc",
         function() builtin().git_commits() end,
-        desc = "commits",
+        desc = "Find commits",
       },
       {
         "<leader>gs",
         function() builtin().git_status() end,
-        desc = "status",
+        desc = "Show Status",
       },
       -- search
       {

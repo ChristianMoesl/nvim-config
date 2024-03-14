@@ -148,6 +148,7 @@ local function execute(command_args)
     args = { "-c", command_args }
   elseif type(command_args) == "table" then
     command = command_args[1]
+    ---@diagnostic disable-next-line: deprecated
     args = table.move(command_args, 2, #command_args, 1, {})
   end
 
@@ -222,13 +223,23 @@ return {
       },
       {
         "<leader>iu",
-        ":r! uuid<CR>",
+        ":r! uuid<cr>",
         desc = "Insert random UUID",
       },
       {
         "<leader>gv",
         function() execute({ "gh", "browse" }) end,
         desc = "Browse GitHub repo",
+      },
+      {
+        "<leader>gP",
+        "<cmd>G push<cr>",
+        desc = "Push to remote",
+      },
+      {
+        "<leader>gu",
+        "<cmd>G pull<cr>",
+        desc = "Pull from remove",
       },
       {
         "<leader>gpc",
@@ -248,17 +259,12 @@ return {
       {
         "<leader>gpr",
         function() execute("gprmr") end,
-        desc = "Make pull request ready for CDM",
+        desc = "Make pull request ready for my team",
       },
       {
         "<leader>gpR",
         function() execute("gprmrabs") end,
-        desc = "Make pull request ready for CDM & ABS",
-      },
-      {
-        "<leader>gpv",
-        function() execute({ "gh", "pr", "view", "--web" }) end,
-        desc = "View Pull Request in web browser",
+        desc = "Make pull request ready for everyone",
       },
       {
         "<leader>gpv",
