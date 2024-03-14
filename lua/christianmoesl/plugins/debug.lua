@@ -4,6 +4,7 @@ local function get_args(config)
   config = vim.deepcopy(config)
   ---@cast args string[]
   config.args = function()
+    ---@diagnostic disable-next-line: redundant-parameter
     local new_args = vim.fn.input("Run with args: ", table.concat(args, " ")) --[[@as string]]
     return vim.split(vim.fn.expand(new_args) --[[@as string]], " ")
   end
@@ -69,8 +70,6 @@ return {
       },
     },
     config = function(_, opts)
-      -- setup dap config by VsCode launch.json file
-      -- require("dap.ext.vscode").load_launchjs()
       local dap = require("dap")
       local dapui = require("dapui")
       dapui.setup(opts)
