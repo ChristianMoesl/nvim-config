@@ -46,6 +46,10 @@ return {
       local defaults = require("cmp.config.default")()
       local luasnip = require("luasnip")
 
+      local sorting = defaults.sorting
+      ---@diagnostic disable-next-line: need-check-nil
+      table.insert(sorting.comparators, 1, require("copilot_cmp.comparators").prioritize)
+
       return {
         completion = {
           completopt = "menu,menuone,noinsert",
@@ -54,6 +58,14 @@ return {
         performance = {
           debounce = 300,
           throttle = 150,
+          max_view_entries = 20,
+        },
+        matching = {
+          disallow_fuzzy_matching = false,
+          disallow_fullfuzzy_matching = false,
+          disallow_partial_fuzzy_matching = true,
+          disallow_partial_matching = false,
+          disallow_prefix_unmatching = false,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item(),
@@ -97,7 +109,7 @@ return {
             hl_group = "CmpGhostText",
           },
         },
-        sorting = defaults.sorting,
+        sorting = sorting,
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,
         },
