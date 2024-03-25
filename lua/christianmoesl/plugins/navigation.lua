@@ -106,6 +106,13 @@ return {
         ["g."] = "actions.toggle_hidden",
         ["g\\"] = "actions.toggle_trash",
       },
+      lsp_file_methods = {
+        -- Set to true to autosave buffers that are updated with LSP willRenameFiles
+        -- Set to "unmodified" to only save unmodified buffers
+        autosave_changes = true,
+      },
+      -- Set to true to watch the filesystem for changes and reload oil
+      experimental_watch_for_changes = true,
     },
   },
 }
