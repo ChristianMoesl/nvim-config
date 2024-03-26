@@ -263,7 +263,7 @@ return {
       },
       {
         "<leader>gpR",
-        function() execute("gprmrabs") end,
+        function() execute("gprmR") end,
         desc = "Make pull request ready for everyone",
       },
       {
