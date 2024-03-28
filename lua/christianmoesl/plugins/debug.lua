@@ -25,6 +25,7 @@ return {
     "rcarriga/nvim-dap-ui",
     dependencies = {
       "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
     },
     cond = require("christianmoesl.util").is_full_profile,
     -- stylua: ignore
