@@ -112,7 +112,7 @@ return {
         autosave_changes = true,
       },
       -- Set to true to watch the filesystem for changes and reload oil
-      experimental_watch_for_changes = true,
+      -- experimental_watch_for_changes = true,
     },
   },
 }
