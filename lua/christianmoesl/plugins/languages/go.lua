@@ -4,7 +4,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "gopls", "goimports", "gofumpt" })
+      vim.list_extend(opts.ensure_installed, { "gopls", "goimports", "gofumpt", "delve" })
     end,
   },
   {
@@ -76,5 +76,10 @@ return {
         },
       },
     },
+  },
+  {
+    "leoluz/nvim-dap-go",
+    ft = { "go" },
+    config = function() require("dap-go").setup() end,
   },
 }
