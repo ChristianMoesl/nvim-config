@@ -49,8 +49,7 @@ return {
       cmd = {
         "jdtls",
         string.format(
-          -- TODO: remove this workaround (currently we need to patch lombok with the latest edge version to make it work)
-          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok-edge.jar",
+          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok.jar",
           vim.fn.stdpath("data")
         ),
         "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
