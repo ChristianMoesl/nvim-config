@@ -1,19 +1,20 @@
+---@param filenames string[]
 local function extract_filenames(filenames)
   local shortened = {}
 
   local counts = {}
   for _, file in ipairs(filenames) do
-    local name = vim.fn.fnamemodify(file.filename, ":t")
+    local name = vim.fn.fnamemodify(file, ":t")
     counts[name] = (counts[name] or 0) + 1
   end
 
   for _, file in ipairs(filenames) do
-    local name = vim.fn.fnamemodify(file.filename, ":t")
+    local name = vim.fn.fnamemodify(file, ":t")
 
     if counts[name] == 1 then
       table.insert(shortened, vim.fn.fnamemodify(name, ":t"))
     else
-      table.insert(shortened, file.filename)
+      table.insert(shortened, file)
     end
   end
 
@@ -140,11 +141,14 @@ return {
           "diagnostics",
           {
             function()
-              local marks = require("harpoon").get_mark_config().marks
+              local marks = require("harpoon"):list():display()
               return table.concat(extract_filenames(marks), " | ")
             end,
             icon = "󰛢",
-            on_click = function() require("harpoon.ui").toggle_quick_menu() end,
+            on_click = function()
+              local harpoon = require("harpoon")
+              harpoon.ui:toggle_quick_menu(harpoon:list())
+            end,
           },
           "markdown_inline",
         },
