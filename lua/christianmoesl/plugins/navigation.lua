@@ -31,7 +31,7 @@ return {
     keys = {
       {
         "<leader>na",
-        function() harpoon:list():append() end,
+        function() harpoon:list():add() end,
         desc = "Mark file with harpoon",
       },
       {
