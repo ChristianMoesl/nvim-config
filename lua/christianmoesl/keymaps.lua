@@ -45,11 +45,33 @@ vim.keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev se
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
-vim.keymap.set("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
-vim.keymap.set("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
+-- quickfix list
 
-vim.keymap.set("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
-vim.keymap.set("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
+local function toggle_quickfix()
+  local open = false
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      open = true
+    end
+  end
+  if open == true then
+    vim.cmd("cclose")
+    return
+  else
+    vim.cmd("copen")
+  end
+end
+
+vim.keymap.set("n", "<leader>q", toggle_quickfix, { desc = "Quickfix List" })
+
+vim.keymap.set("n", "[q", function()
+  vim.cmd("cprev")
+  vim.cmd("norm zz")
+end, { desc = "Previous quickfix" })
+vim.keymap.set("n", "]q", function()
+  vim.cmd("cnext")
+  vim.cmd("norm zz")
+end, { desc = "Next quickfix" })
 
 -- toggle options
 if vim.lsp.inlay_hint then
@@ -62,7 +84,7 @@ if vim.lsp.inlay_hint then
 end
 
 -- quit
-vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+vim.keymap.set("n", "<leader>Q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- Terminal Mappings
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

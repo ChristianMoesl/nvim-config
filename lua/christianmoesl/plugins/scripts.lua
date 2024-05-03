@@ -287,12 +287,36 @@ return {
         desc = "Create and switch branch",
       },
       {
-        "<leader>xw",
+        "<leader>xa",
         function()
           vim.diagnostic.setqflist()
           vim.cmd("Cfilter! /build\\/openApi\\//")
         end,
-        desc = "Workspace diagnostics in quickfix list",
+        desc = "All diagnostics",
+      },
+      {
+        "<leader>xw",
+        function()
+          vim.diagnostic.setqflist({
+            severity = {
+              max = vim.diagnostic.severity.WARN,
+            },
+          })
+          vim.cmd("Cfilter! /build\\/openApi\\//")
+        end,
+        desc = "Warning diagnostics",
+      },
+      {
+        "<leader>xe",
+        function()
+          vim.diagnostic.setqflist({
+            severity = {
+              min = vim.diagnostic.severity.ERROR,
+            },
+          })
+          vim.cmd("Cfilter! /build\\/openApi\\//")
+        end,
+        desc = "Error diagnostics",
       },
     },
   },
