@@ -4,7 +4,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "java", "groovy", "kotlin" })
+      vim.list_extend(opts.ensure_installed, { "java", "groovy" })
     end,
   },
   -- install formatter and Java LSP server
@@ -78,7 +78,7 @@ return {
           },
           completion = {
             favoriteStaticMembers = {
-              "org.assertj.core.api.Assertions.assertThat",
+              "org.assertj.core.api.Assertions.*",
               "java.util.Objects.requireNonNull",
               "java.util.Objects.requireNonNullElse",
               "org.mockito.Mockito.*",
