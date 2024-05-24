@@ -49,7 +49,7 @@ return {
       cmd = {
         "jdtls",
         string.format(
-          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok.jar",
+          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok-latest.jar", -- TODO: reevaluate version
           vim.fn.stdpath("data")
         ),
         "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
@@ -137,27 +137,43 @@ return {
         -- Find the extra bundles that should be passed on the jdtls command-line
         -- if nvim-dap is enabled with java debug/test.
         local mason_registry = require("mason-registry")
-        opts.init_options = {
-          bundles = {}, ---@type string[]
-        }
+
         local java_dbg_pkg = mason_registry.get_package("java-debug-adapter")
         local java_dbg_path = java_dbg_pkg:get_install_path()
-        local jar_patterns = {
-          java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+
+        local bundles = {
+          vim.fn.glob(
+            java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+            -- "path/to/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
+            true
+          ),
         }
+        -- local jar_patterns = {
+        --   java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
+        -- }
 
         -- java-test also depends on java-debug-adapter.
         local java_test_pkg = mason_registry.get_package("java-test")
         local java_test_path = java_test_pkg:get_install_path()
-        vim.list_extend(jar_patterns, {
-          java_test_path .. "/extension/server/*.jar",
-        })
+        vim.list_extend(
+          bundles,
+          vim.split(vim.fn.glob("/Users/chris/rbmh/vscode-java-test/server/*.jar", true), "\n")
+        )
+        -- vim.list_extend(jar_patterns, {
+        --   java_test_path .. "/extension/server/*.jar",
+        -- })
 
-        for _, jar_pattern in ipairs(jar_patterns) do
-          for _, bundle in ipairs(vim.split(vim.fn.glob(jar_pattern), "\n")) do
-            table.insert(opts.init_options.bundles, bundle)
-          end
-        end
+        opts.init_options = {
+          bundles = bundles,
+        }
+        -- opts.init_options = {
+        --   bundles = {}, ---@type string[]
+        -- }
+        -- for _, jar_pattern in ipairs(jar_patterns) do
+        --   for _, bundle in ipairs(vim.split(vim.fn.glob(jar_pattern), "\n")) do
+        --     table.insert(opts.init_options.bundles, bundle)
+        --   end
+        -- end
 
         -- Existing server will be reused if the root_dir matches.
         require("jdtls").start_or_attach(opts)
