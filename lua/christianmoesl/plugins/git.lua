@@ -1,3 +1,13 @@
+local function toggle_fugitive()
+  for _, buf in pairs(vim.fn.getbufinfo()) do
+    if buf.name:find("^fugitive:///") then
+      vim.api.nvim_buf_delete(buf.bufnr, {})
+      return
+    end
+  end
+  vim.cmd("G")
+end
+
 return {
   {
     "tpope/vim-fugitive",
@@ -6,7 +16,7 @@ return {
     keys = {
       {
         "<leader>go",
-        "<cmd>G<cr>",
+        toggle_fugitive,
         desc = "Open Fugitive",
       },
     },
@@ -35,22 +45,22 @@ return {
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
 
-        -- Navigation
-        map("n", "]c", function()
-          if vim.wo.diff then
-            return "]c"
-          end
-          vim.schedule(function() gs.next_hunk() end)
-          return "<Ignore>"
-        end, { expr = true })
-
-        map("n", "[c", function()
-          if vim.wo.diff then
-            return "[c"
-          end
-          vim.schedule(function() gs.prev_hunk() end)
-          return "<Ignore>"
-        end, { expr = true })
+        -- -- Navigation
+        -- vim.keymap.set("n", "]c", function()
+        --   if vim.wo.diff then
+        --     return "]c"
+        --   end
+        --   vim.schedule(function() gs.next_hunk() end)
+        --   return "<Ignore>"
+        -- end, { expr = true, desc = "" })
+        --
+        -- vim.keymap.set("n", "[c", function()
+        --   if vim.wo.diff then
+        --     return "[c"
+        --   end
+        --   vim.schedule(function() gs.prev_hunk() end)
+        --   return "<Ignore>"
+        -- end, { expr = true, desc = "" })
 
         -- Actions
         -- stylua: ignore start
