@@ -217,6 +217,14 @@ return {
     "nvim-telescope/telescope.nvim",
     keys = {
       {
+        "<leader>cW",
+        function()
+          local path = vim.fn.stdpath("cache") .. "/jdtls/"
+          vim.cmd("!rm -rf '" .. path .. "'")
+        end,
+        desc = "Wipe temporary LSP files",
+      },
+      {
         "<leader>io",
         function() insert(objectId) end,
         desc = "Insert random ObjectId",
