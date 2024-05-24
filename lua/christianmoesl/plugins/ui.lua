@@ -134,6 +134,7 @@ return {
         "nvim-dap-ui",
       },
       sections = {
+        lualine_a = { "mode", function() return extract_filenames({ vim.fn.getcwd() })[1] end },
         lualine_b = {
           "branch",
           "diff",
