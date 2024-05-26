@@ -74,14 +74,12 @@ vim.keymap.set("n", "]q", function()
 end, { desc = "Next quickfix" })
 
 -- toggle options
-if vim.lsp.inlay_hint then
-  vim.keymap.set(
-    "n",
-    "<leader>uh",
-    function() vim.lsp.inlay_hint(0, nil) end,
-    { desc = "Toggle Inlay Hints" }
-  )
-end
+vim.keymap.set(
+  "n",
+  "<leader>ui",
+  function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = nil })) end,
+  { desc = "Toggle Inlay Hints" }
+)
 
 -- quit
 vim.keymap.set("n", "<leader>Q", "<cmd>qa<cr>", { desc = "Quit all" })
