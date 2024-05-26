@@ -35,6 +35,13 @@ return {
         desc = "Find Files",
       },
       {
+        "<leader>fF",
+        function()
+          builtin().find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+        end,
+        desc = "Find Files (including hidden)",
+      },
+      {
         "<leader>fr",
         function() builtin().oldfiles() end,
         desc = "Recent Files",
@@ -117,7 +124,12 @@ return {
         desc = "Help",
       },
     },
-    opts = {},
+    opts = {
+      defaults = {
+        layout_strategy = "vertical",
+        path_display = { "truncate" },
+      },
+    },
     config = function(_, opts)
       local actions = require("telescope.actions")
       local defaults = {
