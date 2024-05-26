@@ -163,6 +163,7 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     opts = {
+      inlay_hints = { enabled = true },
       diagnostics = {
         underline = true,
         update_in_insert = false,
