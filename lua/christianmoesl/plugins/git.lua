@@ -1,6 +1,6 @@
 local function toggle_fugitive()
   for _, buf in pairs(vim.fn.getbufinfo()) do
-    if buf.name:find("^fugitive:///") then
+    if buf.name:find("^fugitive://.*/%.git//$") then
       vim.api.nvim_buf_delete(buf.bufnr, {})
       return
     end
