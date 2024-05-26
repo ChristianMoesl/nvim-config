@@ -56,10 +56,7 @@ opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
-
-if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
-end
+opt.smoothscroll = true
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
