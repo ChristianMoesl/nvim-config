@@ -11,6 +11,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
         "jdtls",
         "java-test", -- build from source instead of installing it with Mason: https://github.com/mason-org/mason-registry/pull/3083

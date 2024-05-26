@@ -31,7 +31,6 @@ return {
         timeout_ms = 3000,
       },
       formatters_by_ft = {
-        ["sh"] = { "shfmt" },
         -- Use the "*" filetype to run formatters on all filetypes.
         ["*"] = { "codespell" },
       },

@@ -15,10 +15,24 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
         "vue-language-server",
         "prettier",
         "typescript-language-server",
+        "eslint_d",
+      })
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    opts = function()
+      local lint = require("lint")
+      lint.linters_by_ft = vim.tbl_deep_extend("force", lint.linters_by_ft or {}, {
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
       })
     end,
   },

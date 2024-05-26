@@ -46,7 +46,6 @@ return {
       highlight = { enable = true },
       indent = { enable = false },
       ensure_installed = {
-        "bash",
         "html",
         "json",
         "dockerfile",

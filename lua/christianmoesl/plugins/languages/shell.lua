@@ -1,22 +1,20 @@
 return {
-  -- Add to Treesitter.
+  -- install treesitter grammar
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, {
-        "markdown",
-        "markdown_inline",
-      })
+      vim.list_extend(opts.ensure_installed, { "bash" })
     end,
   },
-  -- install formatter and LSP server
+  -- install formatter and Linter, Formatter, and LSP server
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
-        "marksman",
-        "vale",
+        "shellcheck",
+        "shfmt",
       })
     end,
   },
@@ -26,16 +24,17 @@ return {
     opts = function()
       local lint = require("lint")
       lint.linters_by_ft = vim.tbl_deep_extend("force", lint.linters_by_ft or {}, {
-        markdown = { "vale" },
+        sh = { "shellcheck" },
       })
     end,
   },
-  -- Marksman sever configuration is available by default
+  -- configure Formatter integration
   {
-    "neovim/nvim-lspconfig",
+    "stevearc/conform.nvim",
     opts = {
-      servers = {
-        marksman = {},
+      formatters_by_ft = {
+        ["sh"] = { "shfmt" },
+        ["zsh"] = { "shfmt" },
       },
     },
   },
