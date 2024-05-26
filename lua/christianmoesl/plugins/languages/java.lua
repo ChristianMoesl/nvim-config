@@ -41,7 +41,7 @@ return {
       "rcarriga/nvim-dap-ui",
     },
     ft = { "java" },
-    ---@type lsp.StartOpts
+    ---@type jdtls.start.opts
     opts = {
       flags = {
         debounce_text_changes = 150, -- default is 150
