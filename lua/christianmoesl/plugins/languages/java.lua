@@ -44,12 +44,12 @@ return {
     ---@type lsp.StartOpts
     opts = {
       flags = {
-        debounce_text_changes = 300, -- default is 150
+        debounce_text_changes = 150, -- default is 150
       },
       cmd = {
         "jdtls",
         string.format(
-          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok-latest.jar", -- TODO: reevaluate version
+          "--jvm-arg=-javaagent:%s/mason/share/jdtls/lombok-edge.jar", -- TODO: reevaluate version
           vim.fn.stdpath("data")
         ),
         "--jvm-arg=-Xmx8G", -- give some additional memory for large projects
@@ -57,7 +57,6 @@ return {
       settings = {
         java = {
           autobuild = { enabled = true },
-          maxConcurrentBuilds = 1,
           signatureHelp = { enabled = true },
           import = { enabled = true },
           rename = { enabled = true },
@@ -70,6 +69,9 @@ return {
             parameterNames = {
               enabled = "all", -- literals, all, none
             },
+          },
+          settings = {
+            url = string.format("%s/extras/jdtls/compiler.properties", vim.fn.stdpath("config")),
           },
           jdt = {
             ls = {
@@ -106,7 +108,7 @@ return {
     },
     config = function(_, opts)
       local function attach_jdtls()
-        local root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" })
+        local root_dir = vim.fs.root(0, { ".git", "mvnw", "gradlew" })
 
         local project_name = root_dir and vim.fs.basename(root_dir)
 
@@ -144,36 +146,20 @@ return {
         local bundles = {
           vim.fn.glob(
             java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
-            -- "path/to/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
             true
           ),
         }
-        -- local jar_patterns = {
-        --   java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
-        -- }
-
         -- java-test also depends on java-debug-adapter.
         local java_test_pkg = mason_registry.get_package("java-test")
         local java_test_path = java_test_pkg:get_install_path()
         vim.list_extend(
           bundles,
-          vim.split(vim.fn.glob("/Users/chris/rbmh/vscode-java-test/server/*.jar", true), "\n")
+          vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", true), "\n")
         )
-        -- vim.list_extend(jar_patterns, {
-        --   java_test_path .. "/extension/server/*.jar",
-        -- })
 
         opts.init_options = {
           bundles = bundles,
         }
-        -- opts.init_options = {
-        --   bundles = {}, ---@type string[]
-        -- }
-        -- for _, jar_pattern in ipairs(jar_patterns) do
-        --   for _, bundle in ipairs(vim.split(vim.fn.glob(jar_pattern), "\n")) do
-        --     table.insert(opts.init_options.bundles, bundle)
-        --   end
-        -- end
 
         -- Existing server will be reused if the root_dir matches.
         require("jdtls").start_or_attach(opts)
