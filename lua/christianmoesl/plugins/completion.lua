@@ -53,12 +53,12 @@ return {
       return {
         completion = {
           completopt = "menu,menuone,noinsert",
-          keyword_length = 2,
+          keyword_length = 1,
         },
         performance = {
-          debounce = 300,
-          throttle = 150,
-          max_view_entries = 20,
+          debounce = 150,
+          throttle = 75,
+          max_view_entries = 30,
         },
         matching = {
           disallow_fuzzy_matching = false,
