@@ -74,7 +74,6 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-y>"] = cmp.mapping.confirm({
             select = true,
-            behavior = cmp.ConfirmBehavior.Replace,
           }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-CR>"] = function(fallback) -- Close auto completion window
