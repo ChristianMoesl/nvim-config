@@ -31,7 +31,6 @@ return {
   -- Use gx to open links or references in the browser
   {
     "chrishrb/gx.nvim",
-    branch = "main",
     event = "VeryLazy",
     keys = {
       { "gx", "<cmd>Browse<cr>", mode = { "n", "v" }, desc = "Open identifier under cursor" },
@@ -39,10 +38,9 @@ return {
     opts = {
       handlers = {
         jira = {
+          name = "jira",
           handle = function(mode, line, _)
-            local helper = require("gx.helper")
-            local pattern = "(%u+-%d+)"
-            local ticket = helper.find(line, mode, pattern)
+            local ticket = require("gx.helper").find(line, mode, "%s(%u+-%d+)%s")
             if ticket and #ticket < 20 then
               return "http://jira.redbullmediahouse.com/browse/" .. ticket
             end
