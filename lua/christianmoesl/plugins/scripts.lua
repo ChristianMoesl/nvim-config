@@ -245,7 +245,7 @@ return {
         desc = "Push to remote",
       },
       {
-        "<leader>gu",
+        "<leader>gU",
         "<cmd>G pull<cr>",
         desc = "Pull from remove",
       },
