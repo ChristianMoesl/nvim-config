@@ -149,6 +149,11 @@ return {
             java_dbg_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar",
             true
           ),
+          -- Use this when java-debug version in Mason is outdated
+          -- vim.fn.glob(
+          --   "/Users/Christian.Moesl/Workspace/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
+          --   true
+          -- ),
         }
         -- java-test also depends on java-debug-adapter.
         local java_test_pkg = mason_registry.get_package("java-test")
@@ -157,9 +162,29 @@ return {
           bundles,
           vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", true), "\n")
         )
+        -- Use this when java-test version in Mason is outdated
+        -- vim.list_extend(
+        --   bundles,
+        --   vim.split(
+        --     vim.fn.glob("/Users/Christian.Moesl/Workspace/vscode-java-test/server/*.jar", true),
+        --     "\n"
+        --   )
+        -- )
 
         opts.init_options = {
           bundles = bundles,
+          settings = {
+            java = {
+              imports = {
+                gradle = {
+                  enabled = true,
+                  wrapper = {
+                    enabled = true,
+                  },
+                },
+              },
+            },
+          },
         }
 
         -- Existing server will be reused if the root_dir matches.
