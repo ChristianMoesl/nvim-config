@@ -13,6 +13,9 @@ return {
     "tpope/vim-fugitive",
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
+    -- dependencies = {
+    --   "tpope/vim-rhubarb",
+    -- },
     keys = {
       {
         "<leader>go",
@@ -20,6 +23,49 @@ return {
         desc = "Open Fugitive",
       },
     },
+  },
+  {
+    "akinsho/git-conflict.nvim",
+    event = "VeryLazy",
+    version = "*",
+    keys = {
+      {
+        "co",
+        "<Plug>(git-conflict-ours)",
+        desc = "Choose ours (Git conflict)",
+      },
+      {
+        "ct",
+        "<Plug>(git-conflict-theirs)",
+        desc = "Choose theirs (Git conflict)",
+      },
+      {
+        "cb",
+        "<Plug>(git-conflict-both)",
+        desc = "Choose both (Git conflict)",
+      },
+      {
+        "c0",
+        "<Plug>(git-conflict-none)",
+        desc = "Choose none (Git conflict)",
+      },
+      {
+        "[x",
+        "<Plug>(git-conflict-prev-conflict)",
+        desc = "Goto previous Git conflict",
+      },
+      {
+        "]x",
+        "<Plug>(git-conflict-next-conflict)",
+        desc = "Goto next Git conflict",
+      },
+    },
+    opts = {
+      default_mappings = true, -- disable buffer local mapping created by this plugin
+      default_commands = true, -- disable commands created by this plugin
+      disable_diagnostics = true, -- This will disable the diagnostics in a buffer whilst it is conflicted
+    },
+    config = true,
   },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
