@@ -225,14 +225,14 @@ return {
         desc = "Wipe temporary LSP files",
       },
       {
-        "<leader>io",
+        "<leader>cgo",
         function() insert(objectId) end,
-        desc = "Insert random ObjectId",
+        desc = "Generate random ObjectId",
       },
       {
-        "<leader>iu",
+        "<leader>cgu",
         ":r! uuid<cr>",
-        desc = "Insert random UUID",
+        desc = "Generate random UUID",
       },
       {
         "<leader>gv",
@@ -330,12 +330,13 @@ return {
   },
   {
     "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>gd"] = { name = "+delete" },
-        ["<leader>gr"] = { name = "+rebase" },
-        ["<leader>gp"] = { name = "+pull request" },
-      },
-    },
+    opts = function(_, opts)
+      opts.defaults = vim.list_extend(opts.defaults or {}, {
+        { "<leader>gd", group = "delete" },
+        { "<leader>gr", group = "rebase" },
+        { "<leader>gp", group = "pull request" },
+        { "<leader>cg", group = "generate" },
+      })
+    end,
   },
 }

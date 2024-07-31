@@ -14,11 +14,11 @@ end
 return {
   {
     "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>d"] = { name = "+debug" },
-      },
-    },
+    opts = function(_, opts)
+      opts.defaults = vim.list_extend(opts.defaults or {}, {
+        { "<leader>d", group = "debug" },
+      })
+    end,
   },
   -- fancy UI for the debugger
   {

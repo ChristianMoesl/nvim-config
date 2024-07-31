@@ -1,11 +1,11 @@
 return {
   {
     "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>t"] = { name = "+test" },
-      },
-    },
+    opts = function(_, opts)
+      opts.defaults = vim.list_extend(opts.defaults or {}, {
+        { "<leader>t", group = "test" },
+      })
+    end,
   },
   {
     "nvim-neotest/neotest",

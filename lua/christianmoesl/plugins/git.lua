@@ -127,12 +127,12 @@ return {
   },
   {
     "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
-      },
-    },
+    opts = function(_, opts)
+      opts.defaults = vim.list_extend(opts.defaults or {}, {
+        { "<leader>g", group = "git" },
+        { "<leader>gh", group = "hunks" },
+      })
+    end,
   },
   {
     "nvim-telescope/telescope.nvim",
