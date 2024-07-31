@@ -22,6 +22,21 @@ return {
         toggle_fugitive,
         desc = "Open Fugitive",
       },
+      {
+        "<leader>gm",
+        "<cmd>G mergetool<CR>",
+        desc = "Mergetool",
+      },
+      {
+        "<leader>gcO",
+        "<cmd>G checkout --ours -- %<CR>",
+        desc = "Choose ours (file)",
+      },
+      {
+        "<leader>gcT",
+        "<cmd>G checkout --theirs -- %<CR>",
+        desc = "Choose theirs (file)",
+      },
     },
   },
   {
@@ -31,24 +46,24 @@ return {
     version = "*",
     keys = {
       {
-        "co",
+        "<leader>gco",
         "<Plug>(git-conflict-ours)",
-        desc = "Choose ours (Git conflict)",
+        desc = "Choose ours",
       },
       {
-        "ct",
+        "<leader>gct",
         "<Plug>(git-conflict-theirs)",
-        desc = "Choose theirs (Git conflict)",
+        desc = "Choose theirs",
       },
       {
-        "cb",
+        "<leader>gcb",
         "<Plug>(git-conflict-both)",
-        desc = "Choose both (Git conflict)",
+        desc = "Choose both",
       },
       {
-        "c0",
+        "<leader>gc0",
         "<Plug>(git-conflict-none)",
-        desc = "Choose none (Git conflict)",
+        desc = "Choose none",
       },
       {
         "[x",
@@ -132,6 +147,7 @@ return {
       opts.defaults = vim.list_extend(opts.defaults or {}, {
         { "<leader>g", group = "git" },
         { "<leader>gh", group = "hunks" },
+        { "<leader>gc", group = "conflicts" },
       })
     end,
   },
