@@ -23,6 +23,11 @@ return {
         desc = "Open Fugitive",
       },
       {
+        "<leader>gl",
+        "<cmd>G branch --list<CR>",
+        desc = "Branch List",
+      },
+      {
         "<leader>gm",
         "<cmd>G mergetool<CR>",
         desc = "Mergetool",
