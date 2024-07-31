@@ -27,6 +27,7 @@ return {
   {
     "akinsho/git-conflict.nvim",
     event = "VeryLazy",
+    cond = require("christianmoesl.util").is_full_profile,
     version = "*",
     keys = {
       {
@@ -61,11 +62,11 @@ return {
       },
     },
     opts = {
-      default_mappings = true, -- disable buffer local mapping created by this plugin
+      default_mappings = false, -- disable buffer local mapping created by this plugin
       default_commands = true, -- disable commands created by this plugin
       disable_diagnostics = true, -- This will disable the diagnostics in a buffer whilst it is conflicted
     },
-    config = true,
+    config = function(_, opts) require("git-conflict").setup(opts) end,
   },
   -- git signs highlights text that has changed since the list
   -- git commit, and also lets you interactively stage & unstage
