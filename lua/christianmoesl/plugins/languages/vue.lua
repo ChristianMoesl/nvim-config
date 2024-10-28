@@ -50,7 +50,7 @@ return {
             "vue",
           },
         },
-        tsserver = {
+        ts_ls = {
           init_options = {
             plugins = {},
           },
@@ -62,11 +62,11 @@ return {
       local mason_registry = require("mason-registry")
       local has_volar, volar = pcall(mason_registry.get_package, "vue-language-server")
 
-      -- If server `volar` and `tsserver` exists, add `@vue/typescript-plugin` to `tsserver`
-      if opts.servers.volar ~= nil and opts.servers.tsserver ~= nil and has_volar then
-        local tsserver = opts.servers.tsserver or {} -- Ensure tsserver is initialized
-        tsserver.init_options = tsserver.init_options or {} -- Ensure init_options is initialized
-        tsserver.init_options.plugins = tsserver.init_options.plugins or {} -- Ensure plugins is initialized
+      -- If server `volar` and `ts_ls` exists, add `@vue/typescript-plugin` to `ts_ls`
+      if opts.servers.volar ~= nil and opts.servers.ts_ls ~= nil and has_volar then
+        local ts_ls = opts.servers.ts_ls or {} -- Ensure ts_ls is initialized
+        ts_ls.init_options = ts_ls.init_options or {} -- Ensure init_options is initialized
+        ts_ls.init_options.plugins = ts_ls.init_options.plugins or {} -- Ensure plugins is initialized
 
         -- Even for now can use
         local vue_ts_plugin_path = volar:get_install_path()
@@ -82,10 +82,10 @@ return {
           languages = { "vue" },
         }
 
-        -- Append the plugin to the `tsserver` server
-        vim.list_extend(tsserver.init_options.plugins, { vue_plugin })
+        -- Append the plugin to the `ts_ls` server
+        vim.list_extend(ts_ls.init_options.plugins, { vue_plugin })
 
-        opts.servers.tsserver = tsserver
+        opts.servers.ts_ls = ts_ls
       end
     end,
   },
