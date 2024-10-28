@@ -82,19 +82,30 @@ return {
           completion = {
             favoriteStaticMembers = {
               "org.assertj.core.api.Assertions.*",
-              "java.util.Objects.requireNonNull",
-              "java.util.Objects.requireNonNullElse",
+              "java.util.Objects.*",
               "org.mockito.Mockito.*",
             },
             filteredTypes = {
               "java.awt.*",
               "com.sun.*",
               "io.micrometer.shaded.*",
+              "shaded_package.*",
             },
             matchCase = "FIRSTLETTER",
+            -- importOrder = {
+            --   "com.redbull",
+            --   "org.junit.jupiter.api",
+            --   "java",
+            --   "javax",
+            --   "com",
+            --   "org",
+            -- },
           },
           edit = {
             validateAllOpenBuffersOnChanges = true,
+          },
+          eclipse = {
+            downloadSources = true,
           },
         },
       },
