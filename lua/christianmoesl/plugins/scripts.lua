@@ -280,6 +280,15 @@ return {
         desc = "View Pull Request in web browser",
       },
       {
+        "<leader>gC",
+        function()
+          vim.cmd("G add --all")
+          vim.cmd("G commit")
+          vim.cmd("G push")
+        end,
+        desc = "New commit",
+      },
+      {
         "<leader>gdc",
         function() execute("gbgc") end,
         desc = "GC merged branches",
@@ -303,10 +312,24 @@ return {
         desc = "All diagnostics",
       },
       {
+        "<leader>xi",
+        function()
+          vim.diagnostic.setqflist({
+            severity = {
+              min = vim.diagnostic.severity.INFO,
+              max = vim.diagnostic.severity.INFO,
+            },
+          })
+          vim.cmd("Cfilter! /build\\/openApi\\//")
+        end,
+        desc = "Warning diagnostics",
+      },
+      {
         "<leader>xw",
         function()
           vim.diagnostic.setqflist({
             severity = {
+              min = vim.diagnostic.severity.WARN,
               max = vim.diagnostic.severity.WARN,
             },
           })
