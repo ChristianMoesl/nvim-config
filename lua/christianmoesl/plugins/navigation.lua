@@ -1,8 +1,19 @@
+local function extract_path(terminal_buffer_name)
+  local without_prefix = string.sub(terminal_buffer_name, string.len("term://") + 1)
+
+  return string.sub(without_prefix, 1, without_prefix:find("//") - 1)
+end
+
 local function open_terminal()
   for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_get_name(buffer):find("^term://") ~= nil then
-      vim.api.nvim_win_set_buf(0, buffer)
-      return
+    local name = vim.api.nvim_buf_get_name(buffer)
+    if name:find("^term://") ~= nil then
+      local path = extract_path(name)
+      local absolute_path = vim.fn.expand(path)
+
+      if absolute_path == vim.fn.getcwd() then
+        vim.api.nvim_win_set_buf(0, buffer)
+      end
     end
   end
   vim.cmd(":terminal")
