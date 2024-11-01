@@ -47,7 +47,6 @@ return {
       indent = { enable = false },
       ensure_installed = {
         "html",
-        "json",
         "dockerfile",
         "query",
         "regex",
