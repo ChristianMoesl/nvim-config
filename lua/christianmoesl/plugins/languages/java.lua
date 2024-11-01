@@ -253,7 +253,7 @@ return {
           -- don't merge with default config
           inherit = false,
           -- This can be a string or a function that returns a string
-          command = vim.fn.stdpath("config") .. "/spotless.sh",
+          command = vim.fn.stdpath("config") .. "/extras/spotless/format.sh",
           args = {
             "$FILENAME",
           },
