@@ -21,9 +21,8 @@ return {
   -- Configure linter
   {
     "mfussenegger/nvim-lint",
-    opts = function()
-      local lint = require("lint")
-      lint.linters_by_ft = vim.tbl_deep_extend("force", lint.linters_by_ft or {}, {
+    opts = function(_, opts)
+      opts.linters_by_ft = vim.tbl_deep_extend("force", opts.linters_by_ft or {}, {
         sh = { "shellcheck" },
       })
     end,
