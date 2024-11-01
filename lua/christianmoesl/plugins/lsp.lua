@@ -1,7 +1,7 @@
 ---@param buffer integer
 ---@param method string
 local function has_method(buffer, method)
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  local clients = vim.lsp.get_clients({ bufnr = buffer })
   for _, client in ipairs(clients) do
     if client.supports_method(method) then
       return true
@@ -18,7 +18,7 @@ local function diagnostic_goto(next, severity)
 end
 
 ---@param buffer integer
----@param client integer
+---@param client vim.lsp.Client|nil
 local function map_lsp_keys(buffer, client)
   local keymaps = {
     { "K", vim.lsp.buf.hover, desc = "Hover Documentation" },
@@ -107,7 +107,6 @@ local function map_lsp_keys(buffer, client)
   vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
     buffer = buffer,
     callback = function()
-      ---@diagnostic disable-next-line: undefined-field
       if client and client.server_capabilities.documentHighlightProvider then
         vim.lsp.buf.document_highlight()
       end
@@ -117,7 +116,6 @@ local function map_lsp_keys(buffer, client)
   vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
     buffer = buffer,
     callback = function()
-      ---@diagnostic disable-next-line: undefined-field
       if client and client.server_capabilities.documentHighlightProvider then
         vim.lsp.buf.clear_references()
       end
