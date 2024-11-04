@@ -99,7 +99,7 @@ return {
     ft = { "go" },
     config = function() require("dap-go").setup() end,
   },
-  -- Install GO linter
+  -- Configure linter
   {
     "mfussenegger/nvim-lint",
     opts = function(_, opts)
@@ -107,5 +107,10 @@ return {
         go = { "golangcilint" },
       })
     end,
+  },
+  -- Configure formatter
+  {
+    "stevearc/conform.nvim",
+    opts = function(_, opts) opts.formatters_by_ft.go = { "goimports", "gofumpt" } end,
   },
 }
