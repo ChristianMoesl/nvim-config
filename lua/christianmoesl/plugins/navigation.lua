@@ -13,6 +13,7 @@ local function open_terminal()
 
       if absolute_path == vim.fn.getcwd() then
         vim.api.nvim_win_set_buf(0, buffer)
+        return
       end
     end
   end
