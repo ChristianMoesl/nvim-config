@@ -51,7 +51,13 @@ return {
           init_options = {
             plugins = {},
           },
-          filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+          filetypes = {
+            "typescript",
+            "javascript",
+            "javascriptreact",
+            "typescriptreact",
+            "vue",
+          },
         },
       }
       opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, servers)
@@ -65,11 +71,8 @@ return {
         ts_ls.init_options = ts_ls.init_options or {} -- Ensure init_options is initialized
         ts_ls.init_options.plugins = ts_ls.init_options.plugins or {} -- Ensure plugins is initialized
 
-        -- Even for now can use
         local vue_ts_plugin_path = volar:get_install_path()
           .. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
-        -- after volar 2.0.7
-        -- local vue_ts_plugin_path = mason_registry.get_package('vue-language-server'):get_install_path() .. '/typescript-plugin'
 
         local vue_plugin = {
           name = "@vue/typescript-plugin",
