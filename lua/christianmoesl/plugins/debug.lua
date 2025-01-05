@@ -27,6 +27,7 @@ return {
       "mfussenegger/nvim-dap",
       "nvim-neotest/nvim-nio",
     },
+    event = { "VeryLazy" },
     cond = require("christianmoesl.util").is_full_profile,
     -- stylua: ignore
     keys = {

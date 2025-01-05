@@ -25,6 +25,12 @@ return {
     opts = {
       servers = {
         gopls = {
+          filetypes = {
+            "go",
+            "gomod",
+            "gowork",
+            -- "gojs",
+          },
           keys = {
             -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
             {
@@ -36,6 +42,9 @@ return {
           settings = {
             gopls = {
               gofumpt = true,
+              templateExtensions = {
+                "gojs",
+              },
               codelenses = {
                 gc_details = false,
                 generate = true,
@@ -87,18 +96,24 @@ return {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
-      { "fredrikaverpil/neotest-golang", version = "*" },
+      {
+        "fredrikaverpil/neotest-golang",
+        -- version = "*",
+        dependencies = {
+          "leoluz/nvim-dap-go",
+        },
+      },
     },
     opts = function(_, opts)
       opts.adapters = opts.adapters or {}
       table.insert(opts.adapters, require("neotest-golang"))
     end,
   },
-  {
-    "leoluz/nvim-dap-go",
-    ft = { "go" },
-    config = function() require("dap-go").setup() end,
-  },
+  -- {
+  --   -- "leoluz/nvim-dap-go",
+  --   -- ft = { "go" },
+  --   config = function() require("dap-go").setup() end,
+  -- },
   -- Configure linter
   {
     "mfussenegger/nvim-lint",
