@@ -270,11 +270,6 @@ return {
         desc = "Make pull request ready for my team",
       },
       {
-        "<leader>gpR",
-        function() execute("gprmR") end,
-        desc = "Make pull request ready for everyone",
-      },
-      {
         "<leader>gpv",
         function() execute({ "gh", "pr", "view", "--web" }) end,
         desc = "View Pull Request in web browser",
