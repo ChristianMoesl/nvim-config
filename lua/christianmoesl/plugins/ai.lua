@@ -34,29 +34,64 @@ return {
     end,
   },
   {
-    "robitx/gp.nvim",
+    "frankroeder/parrot.nvim",
     event = "VeryLazy",
     cond = require("christianmoesl.util").is_full_profile,
+    dependencies = {
+      "ibhagwan/fzf-lua",
+      "nvim-lua/plenary.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      "rcarriga/nvim-notify",
+    },
     keys = {
       {
         "<A-u>",
-        function()
-          local name = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
-          if name:find("^" .. vim.fn.stdpath("data") .. "/gp/chats/.*%.md$") ~= nil then
-            -- don't try to open buffer if it is already displayed
-            return
-          end
-          local window = vim.api.nvim_get_current_win()
-          vim.cmd("GpChatToggle")
-          vim.api.nvim_win_close(window, false)
-        end,
-        desc = "Navigate to ChatGPT",
+        "<cmd>PrtChatToggle<cr>",
+        desc = "Navigate to AI Chat",
       },
     },
+    opts = {},
     config = function()
-      require("gp").setup({
-        openai_api_key = { "cat", vim.fn.expand("~") .. "/.config/nvim/.chat-gpt" },
+      require("parrot").setup({
+        providers = {
+          -- anthropic = {
+          --   api_key = os.getenv("ANTHROPIC_API_KEY"),
+          -- },
+          -- gemini = {
+          --   api_key = os.getenv("GEMINI_API_KEY"),
+          -- },
+          openai = {
+            api_key = os.getenv("OPENAI_API_KEY"),
+          },
+        },
       })
     end,
   },
+  -- {
+  --   "robitx/gp.nvim",
+  --   event = "VeryLazy",
+  --   cond = require("christianmoesl.util").is_full_profile,
+  --   -- keys = {
+  --   --   {
+  --   --     "<A-u>",
+  --   --     function()
+  --   --       local name = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+  --   --       if name:find("^" .. vim.fn.stdpath("data") .. "/gp/chats/.*%.md$") ~= nil then
+  --   --         -- don't try to open buffer if it is already displayed
+  --   --         return
+  --   --       end
+  --   --       local window = vim.api.nvim_get_current_win()
+  --   --       vim.cmd("GpChatToggle")
+  --   --       vim.api.nvim_win_close(window, false)
+  --   --     end,
+  --   --     desc = "Navigate to ChatGPT",
+  --   --   },
+  --   -- },
+  --   config = function()
+  --     require("gp").setup({
+  --       openai_api_key = os.getenv("OPENAI_API_KEY"),
+  --     })
+  --   end,
+  -- },
 }
