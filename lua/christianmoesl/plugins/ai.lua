@@ -68,30 +68,4 @@ return {
       })
     end,
   },
-  -- {
-  --   "robitx/gp.nvim",
-  --   event = "VeryLazy",
-  --   cond = require("christianmoesl.util").is_full_profile,
-  --   -- keys = {
-  --   --   {
-  --   --     "<A-u>",
-  --   --     function()
-  --   --       local name = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
-  --   --       if name:find("^" .. vim.fn.stdpath("data") .. "/gp/chats/.*%.md$") ~= nil then
-  --   --         -- don't try to open buffer if it is already displayed
-  --   --         return
-  --   --       end
-  --   --       local window = vim.api.nvim_get_current_win()
-  --   --       vim.cmd("GpChatToggle")
-  --   --       vim.api.nvim_win_close(window, false)
-  --   --     end,
-  --   --     desc = "Navigate to ChatGPT",
-  --   --   },
-  --   -- },
-  --   config = function()
-  --     require("gp").setup({
-  --       openai_api_key = os.getenv("OPENAI_API_KEY"),
-  --     })
-  --   end,
-  -- },
 }

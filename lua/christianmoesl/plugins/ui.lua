@@ -21,6 +21,20 @@ local function extract_filenames(filenames)
   return shortened
 end
 
+local function dirname() return extract_filenames({ vim.fn.getcwd() })[1] end
+
+-- define function and formatting of the information
+local function parrot_status()
+  local status_info = require("parrot.config").get_status_info()
+  local status = ""
+  if status_info.is_chat then
+    status = status_info.prov.chat.name
+  else
+    status = status_info.prov.command.name
+  end
+  return string.format("%s(%s)", status, status_info.model)
+end
+
 return {
   {
     "folke/noice.nvim",
@@ -136,7 +150,10 @@ return {
         "nvim-dap-ui",
       },
       sections = {
-        lualine_a = { "mode", function() return extract_filenames({ vim.fn.getcwd() })[1] end },
+        lualine_a = {
+          "mode",
+          dirname,
+        },
         lualine_b = {
           "branch",
           "diff",
@@ -153,6 +170,10 @@ return {
             end,
           },
           "markdown_inline",
+        },
+        lualine_x = {
+          "encoding",
+          parrot_status,
         },
       },
     },
