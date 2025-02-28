@@ -24,62 +24,80 @@ end
 local harpoon
 
 return {
-  {
-    "folke/which-key.nvim",
-    opts = function(_, opts)
-      opts.defaults = vim.list_extend(opts.defaults or {}, {
-        { "<leader>n", group = "navigation" },
-      })
-    end,
-  },
+  -- {
+  --   "folke/which-key.nvim",
+  --   opts = function(_, opts)
+  --     opts.defaults = vim.list_extend(opts.defaults or {}, {
+  --       { "<leader>n", group = "navigation" },
+  --     })
+  --   end,
+  -- },
   {
     "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    event = "VeryLazy",
-    cond = require("christianmoesl.util").is_full_profile,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    keys = {
-      {
-        "<leader>na",
-        function() harpoon:list():add() end,
-        desc = "Mark file with harpoon",
-      },
-      {
-        "<leader>no",
-        function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
-        desc = "Show harpoon marks",
-      },
-      {
-        "<A-j>",
-        function() harpoon:list():select(1) end,
-        desc = "Navigate to file 1",
-      },
-      {
-        "<A-k>",
-        function() harpoon:list():select(2) end,
-        desc = "Navigate to file 2",
-      },
-      {
-        "<A-l>",
-        function() harpoon:list():select(3) end,
-        desc = "Navigate to file 3",
-      },
-      {
-        "<A-;>",
-        function() harpoon:list():select(4) end,
-        desc = "Navigate to file 4",
-      },
-      {
-        "<A-h>",
-        open_terminal,
-        desc = "Navigate to terminal",
-      },
-    },
+    -- branch = "harpoon2",
+    -- event = "VeryLazy",
+    -- cond = require("christianmoesl.util").is_full_profile,
+    -- dependencies = {
+    --   "nvim-lua/plenary.nvim",
+    -- },
+    keys = function()
+      return {
+        {
+          -- "<leader>na",
+          "<leader>H",
+          function()
+            harpoon:list():add()
+          end,
+          desc = "Mark file with harpoon",
+        },
+        {
+          -- "<leader>no",
+          "<leader>h",
+          function()
+            harpoon.ui:toggle_quick_menu(harpoon:list())
+          end,
+          desc = "Show harpoon marks",
+        },
+        {
+          "<A-j>",
+          function()
+            harpoon:list():select(1)
+          end,
+          desc = "Navigate to file 1",
+        },
+        {
+          "<A-k>",
+          function()
+            harpoon:list():select(2)
+          end,
+          desc = "Navigate to file 2",
+        },
+        {
+          "<A-l>",
+          function()
+            harpoon:list():select(3)
+          end,
+          desc = "Navigate to file 3",
+        },
+        {
+          "<A-;>",
+          function()
+            harpoon:list():select(4)
+          end,
+          desc = "Navigate to file 4",
+        },
+        {
+          "<A-h>",
+          open_terminal,
+          desc = "Navigate to terminal",
+        },
+      }
+    end,
     ---@type HarpoonPartialConfig
     opts = {},
-    config = function(_, opts) harpoon = require("harpoon"):setup(opts) end,
+    config = function(_, opts)
+      harpoon = require("harpoon"):setup(opts)
+    end,
   },
   {
     "stevearc/oil.nvim",
@@ -87,7 +105,7 @@ return {
     lazy = false,
     keys = {
       {
-        "<leader>fb",
+        "<leader>fe",
         "<cmd>Oil<cr>",
         desc = "File Browser",
       },
