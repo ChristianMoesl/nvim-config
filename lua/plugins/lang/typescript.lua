@@ -21,7 +21,7 @@ return {
               if path == nil then
                 return nil
               end
-              if vim.loop.fs_stat(path .. "/jest.config.ts") then
+              if vim.uv.fs_stat(path .. "/jest.config.ts") then
                 return path .. "/jest.config.ts"
               end
               return path .. "/jest.config.js"
