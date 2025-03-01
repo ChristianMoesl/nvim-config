@@ -24,22 +24,9 @@ end
 local harpoon
 
 return {
-  -- {
-  --   "folke/which-key.nvim",
-  --   opts = function(_, opts)
-  --     opts.defaults = vim.list_extend(opts.defaults or {}, {
-  --       { "<leader>n", group = "navigation" },
-  --     })
-  --   end,
-  -- },
   {
     "ThePrimeagen/harpoon",
-    -- branch = "harpoon2",
-    -- event = "VeryLazy",
-    -- cond = require("christianmoesl.util").is_full_profile,
-    -- dependencies = {
-    --   "nvim-lua/plenary.nvim",
-    -- },
+    -- overwrite default key maps
     keys = function()
       return {
         {
