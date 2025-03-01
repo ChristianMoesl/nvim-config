@@ -132,4 +132,25 @@ return {
       -- experimental_watch_for_changes = true,
     },
   },
+  -- Use gx to open links or references in the browser
+  {
+    "chrishrb/gx.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "gx", "<cmd>Browse<cr>", mode = { "n", "v" }, desc = "Open identifier under cursor" },
+    },
+    opts = {
+      handlers = {
+        jira = {
+          name = "jira",
+          handle = function(mode, line, _)
+            local ticket = require("gx.helper").find(line, mode, "%s(%u+-%d+)%s")
+            if ticket and #ticket < 20 then
+              return "http://jira.redbullmediahouse.com/browse/" .. ticket
+            end
+          end,
+        },
+      },
+    },
+  },
 }
