@@ -21,11 +21,11 @@ return {
         toggle_fugitive,
         desc = "Open Fugitive",
       },
-      {
-        "<leader>gl",
-        "<cmd>G branch --list<CR>",
-        desc = "Branch List",
-      },
+      -- {
+      --   "<leader>gl",
+      --   "<cmd>G branch --list<CR>",
+      --   desc = "Branch List",
+      -- },
       {
         "<leader>gm",
         "<cmd>G mergetool<CR>",
@@ -88,4 +88,34 @@ return {
       require("git-conflict").setup(opts)
     end,
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      {
+        "<leader>gl",
+        function()
+          require("telescope.builtin").git_branches()
+        end,
+        desc = "List Git Branches",
+      },
+      -- -- change a keymap
+      -- { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+      -- -- add a keymap to browse plugin files
+      -- {
+      --   "<leader>fp",
+      --   function()
+      --     require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root })
+      --   end,
+      --   desc = "Find Plugin File",
+      -- },
+    },
+  },
+  -- {
+  --   "folke/which-key.nvim",
+  --  opts = function(_, opts)
+  --     opts.defaults = vim.list_extend(opts.defaults or {}, {
+  --       { "<leader>gh", group = "Hunks" },
+  --     })
+  --   end,
+  -- },
 }
