@@ -20,9 +20,6 @@ local function open_terminal()
   vim.cmd(":terminal")
 end
 
----@type Harpoon
-local harpoon
-
 return {
   {
     "ThePrimeagen/harpoon",
@@ -33,7 +30,7 @@ return {
           -- "<leader>na",
           "<leader>H",
           function()
-            harpoon:list():add()
+            require("harpoon"):list():add()
           end,
           desc = "Mark file with harpoon",
         },
@@ -41,6 +38,7 @@ return {
           -- "<leader>no",
           "<leader>h",
           function()
+            local harpoon = require("harpoon")
             harpoon.ui:toggle_quick_menu(harpoon:list())
           end,
           desc = "Show harpoon marks",
@@ -48,28 +46,28 @@ return {
         {
           "<A-j>",
           function()
-            harpoon:list():select(1)
+            require("harpoon"):list():select(1)
           end,
           desc = "Navigate to file 1",
         },
         {
           "<A-k>",
           function()
-            harpoon:list():select(2)
+            require("harpoon"):list():select(2)
           end,
           desc = "Navigate to file 2",
         },
         {
           "<A-l>",
           function()
-            harpoon:list():select(3)
+            require("harpoon"):list():select(3)
           end,
           desc = "Navigate to file 3",
         },
         {
           "<A-;>",
           function()
-            harpoon:list():select(4)
+            require("harpoon"):list():select(4)
           end,
           desc = "Navigate to file 4",
         },
@@ -79,11 +77,6 @@ return {
           desc = "Navigate to terminal",
         },
       }
-    end,
-    ---@type HarpoonPartialConfig
-    opts = {},
-    config = function(_, opts)
-      harpoon = require("harpoon"):setup(opts)
     end,
   },
   {
