@@ -39,4 +39,42 @@ return {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
     },
   },
+  {
+    "folke/which-key.nvim",
+    opts = function(_, opts)
+      opts.spec = vim.list_extend(opts.spec or {}, {
+        { "<leader>gd", group = "Delete" },
+        { "<leader>gp", group = "Pull Requests" },
+        { "<leader>cg", group = "Generate" },
+      })
+    end,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      -- Override LazyVim keymaps
+      {
+        "<leader>/",
+        LazyVim.pick("live_grep", { root = false }),
+        -- require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+        desc = "Find Files (including hidden)",
+      },
+    },
+    opts = {
+      defaults = {
+        layout_strategy = "vertical",
+        -- ignored files are described in ~/.rgignore
+        vimgrep_arguments = {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+          "--hidden", -- also search hidden files
+        },
+      },
+    },
+  },
 }
