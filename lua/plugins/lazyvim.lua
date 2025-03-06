@@ -43,8 +43,6 @@ return {
     "folke/which-key.nvim",
     opts = function(_, opts)
       opts.spec = vim.list_extend(opts.spec or {}, {
-        { "<leader>gd", group = "Delete" },
-        { "<leader>gp", group = "Pull Requests" },
         { "<leader>cg", group = "Generate" },
       })
     end,
