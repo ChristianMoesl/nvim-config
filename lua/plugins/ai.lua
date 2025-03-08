@@ -1,9 +1,20 @@
+local chats_directory = vim.fn.expand("$HOME/.local/share/nvim/parrot/chats/")
+
+local function open_chat()
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+    local name = vim.api.nvim_buf_get_name(buffer)
+    if name:find("^" .. chats_directory) ~= nil then
+      vim.api.nvim_win_set_buf(0, buffer)
+      return
+    end
+  end
+  vim.cmd("AiChatFinder")
+end
+
 return {
   {
     "frankroeder/parrot.nvim",
-    -- event = "VeryLazy",
     dependencies = {
-      "ibhagwan/fzf-lua",
       "nvim-lua/plenary.nvim",
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
@@ -12,8 +23,13 @@ return {
     keys = {
       {
         "<A-u>",
-        "<cmd>AiChatToggle<cr>",
+        open_chat,
         desc = "Navigate to AI Chat",
+      },
+      {
+        "<leader>a",
+        "<cmd>AiChatFinder<CR>",
+        desc = "AI Chat",
       },
     },
     opts = function()
