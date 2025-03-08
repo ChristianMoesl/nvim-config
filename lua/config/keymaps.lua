@@ -4,6 +4,9 @@
 
 local execute = require("lib.async").execute
 
+-- File Navigation
+vim.keymap.set("n", "<leader>by", '<cmd>let @+ = expand("%:p")<cr>', { desc = "Yank File Path of Buffer" })
+
 -- Terminal Mappings
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
 vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
