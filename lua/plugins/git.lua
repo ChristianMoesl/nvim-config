@@ -27,9 +27,14 @@ return {
       --   desc = "Branch List",
       -- },
       {
-        "<leader>gm",
+        "<leader>gmt",
         "<cmd>G mergetool<CR>",
         desc = "Mergetool",
+      },
+      {
+        "<leader>gmc",
+        "<cmd>G merge --continue<CR>",
+        desc = "Merge Continue",
       },
       {
         "<leader>gcO",
@@ -94,6 +99,7 @@ return {
       opts.spec = vim.list_extend(opts.spec or {}, {
         { "<leader>gd", group = "Delete" },
         { "<leader>gp", group = "Pull Requests" },
+        { "<leader>gm", group = "Merge" },
       })
     end,
   },
