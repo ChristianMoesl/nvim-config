@@ -30,10 +30,7 @@ return {
     },
   },
   -- disable buffer status bar at the top
-  {
-    "akinsho/bufferline.nvim",
-    enabled = false,
-  },
+  { "akinsho/bufferline.nvim", enabled = false },
   {
     "LazyVim/LazyVim",
     opts = {
@@ -46,6 +43,7 @@ return {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
     },
   },
+  { "folke/tokyonight.nvim", enabled = false },
   {
     "folke/which-key.nvim",
     opts = function(_, opts)
