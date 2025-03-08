@@ -3,6 +3,13 @@ return {
   -- disable Snacks file explorer (replaced by Oil)
   {
     "folke/snacks.nvim",
+    keys = {
+      -- Disable these keymaps (replaced by Oil keymaps)
+      { "<leader>fe", false },
+      { "<leader>fE", false },
+      { "<leader>e", false },
+      { "<leader>E", false },
+    },
     opts = {
       explorer = { enabled = false },
     },

@@ -87,8 +87,17 @@ return {
       {
         "<leader>fe",
         "<cmd>Oil<cr>",
-        desc = "File Browser",
+        desc = "File Browser (cwd)",
       },
+      {
+        "<leader>fE",
+        function()
+          require("oil").open(LazyVim.root())
+        end,
+        desc = "File Explorer (root)",
+      },
+      { "<leader>e", "<leader>fe", desc = "File Explorer (cwd)", remap = true },
+      { "<leader>E", "<leader>fE", desc = "File Explorer (root)", remap = true },
     },
     opts = {
       -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
