@@ -12,13 +12,13 @@ return {
     keys = {
       {
         "<A-u>",
-        "<cmd>PrtChatToggle<cr>",
+        "<cmd>AiChatToggle<cr>",
         desc = "Navigate to AI Chat",
       },
     },
-    opts = {},
-    config = function()
-      require("parrot").setup({
+    opts = function()
+      return {
+        cmd_prefix = "Ai",
         providers = {
           -- anthropic = {
           --   api_key = os.getenv("ANTHROPIC_API_KEY"),
@@ -30,7 +30,7 @@ return {
             api_key = os.getenv("OPENAI_API_KEY"),
           },
         },
-      })
+      }
     end,
   },
 }
