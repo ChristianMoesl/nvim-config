@@ -80,4 +80,11 @@ return {
       },
     },
   },
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      -- Disable markdown linter because it's kind of awnoying
+      opts.linters_by_ft["markdown"] = nil
+    end,
+  },
 }
