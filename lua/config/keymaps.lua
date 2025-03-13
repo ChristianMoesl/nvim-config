@@ -24,7 +24,12 @@ local filter_and_report = function(level)
 end
 
 vim.keymap.set("n", "<leader>xa", function()
-  vim.diagnostic.setqflist()
+  vim.diagnostic.setqflist({
+    ---@diagnostic disable-next-line: assign-type-mismatch
+    severity = {
+      min = vim.diagnostic.severity.INFO,
+    },
+  })
   filter_and_report("")
 end, { desc = "All diagnostics" })
 
