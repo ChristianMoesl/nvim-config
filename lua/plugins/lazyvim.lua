@@ -87,4 +87,11 @@ return {
       opts.linters_by_ft["markdown"] = nil
     end,
   },
+  {
+    "nvim-neotest/neotest",
+    opts = function(_, opts)
+      -- Disable markdown linter because it's kind of awnoying
+      opts.quickfix = function() end
+    end,
+  },
 }
