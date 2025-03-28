@@ -24,6 +24,10 @@ require("lazy").setup({
     { import = "plugins" },
     { import = "plugins.lang" },
   },
+  dev = {
+    -- directory where you store your local plugin projects
+    path = "~/Workspace",
+  },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
