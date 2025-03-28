@@ -90,8 +90,8 @@ return {
   {
     "nvim-neotest/neotest",
     opts = function(_, opts)
-      -- Disable markdown linter because it's kind of awnoying
-      opts.quickfix = function() end
+      -- Disable opening of quickfix list when tests fail
+      opts.quickfix.open = function() end
     end,
   },
 }
