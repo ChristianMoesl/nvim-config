@@ -3,7 +3,7 @@ return {
     "nvim-neotest/neotest",
     dependencies = {
       "marilari88/neotest-vitest",
-      "nvim-neotest/neotest-jest",
+      { "ChristianMoesl/neotest-jest", branch = "main" },
     },
     opts = function(_, opts)
       opts.adapters = opts.adapters or {}
@@ -11,6 +11,7 @@ return {
       table.insert(
         opts.adapters,
         require("neotest-jest")({
+          test_file_categories = { "spec", "e2e%-spec", "test", "unit", "regression", "integration", "e2e", "it" },
           -- Adapt config file resolving for NX monorepos
           jestConfigFile = function(file)
             local lspconfig = require("lspconfig")
