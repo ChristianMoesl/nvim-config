@@ -94,4 +94,11 @@ return {
       opts.quickfix.open = function() end
     end,
   },
+  {
+    "echasnovski/mini.ai",
+    opts = function(_, opts)
+      local ai = require("mini.ai")
+      opts.custom_textobjects.k = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" })
+    end,
+  },
 }
