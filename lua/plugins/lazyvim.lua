@@ -101,4 +101,10 @@ return {
       opts.custom_textobjects.k = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" })
     end,
   },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      current_line_blame = true,
+    },
+  },
 }
