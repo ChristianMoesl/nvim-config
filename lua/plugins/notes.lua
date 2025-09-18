@@ -27,11 +27,11 @@ return {
     },
     keys = {
       {
-        "<A-n>",
+        "<leader>T",
         function()
           vim.cmd("e " .. notes_directory .. "/ToDos.md")
         end,
-        desc = "Open notes",
+        desc = "ToDos",
       },
     },
     dependencies = {
