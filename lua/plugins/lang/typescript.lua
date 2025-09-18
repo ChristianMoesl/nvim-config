@@ -1,9 +1,43 @@
+-- Jest test files are identified by two main conventions:
+-- 1. They are located inside a directory named `__tests__`.
+-- 2. Their filename includes `.test` or `.spec` before the extension.
+--
+-- @param filepath (string) The path to the file to check.
+-- @return (boolean) Returns `true` if the path matches Jest conventions, otherwise `false`.
+--
+local function isJestTestFile(filepath)
+  -- Return false immediately if the input is not a string.
+  if type(filepath) ~= "string" then
+    return false
+  end
+
+  -- 1. Check if the file is inside a `__tests__` directory.
+  -- This pattern handles both Unix-style ('/') and Windows-style ('\') separators.
+  if filepath:find("/__tests__/") or filepath:find("\\__tests__\\") then
+    return true
+  end
+
+  -- 2. Check for filename suffixes like `.test.js` or `.spec.tsx`.
+  -- The Lua pattern `[jt]sx?$` matches the extensions js, jsx, ts, and tsx.
+  -- - `%.`: Matches a literal dot.
+  -- - `[jt]`: Matches a single character that is either 'j' or 't'.
+  -- - `s`: Matches the literal character 's'.
+  -- - `x?`: Matches the literal character 'x' zero or one time (optional).
+  -- - `$`: Anchors the pattern to the end of the string.
+  if filepath:match("%.spec%.[jt]sx?$") or filepath:match("%.it%.[jt]sx?$") then
+    return true
+  end
+
+  -- If none of the conditions are met, it's not a Jest test file.
+  return false
+end
+
 return {
   {
     "nvim-neotest/neotest",
     dependencies = {
       "marilari88/neotest-vitest",
-      { "ChristianMoesl/neotest-jest", branch = "main" },
+      { "nvim-neotest/neotest-jest", branch = "main" },
     },
     opts = function(_, opts)
       opts.adapters = opts.adapters or {}
@@ -11,7 +45,8 @@ return {
       table.insert(
         opts.adapters,
         require("neotest-jest")({
-          test_file_categories = { "spec", "e2e%-spec", "test", "unit", "regression", "integration", "e2e", "it" },
+          isTestFile = isJestTestFile,
+          -- test_file_categories = { "spec", "e2e%-spec", "test", "unit", "regression", "integration", "e2e", "it" },
           -- Adapt config file resolving for NX monorepos
           jestConfigFile = function(file)
             local lspconfig = require("lspconfig")
@@ -32,6 +67,32 @@ return {
           end,
         })
       )
+      opts.consumers = {
+        -- output = require("neotest.consumers.output"),
+        -- If you use other features like quickfix lists, you might add this too:
+        -- quickfix = require("neotest.consumers.quickfix"),
+      }
     end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        vtsls = {
+          settings = {
+            typescript = {
+              referencesCodeLens = {
+                enabled = true,
+                showOnAllFunctions = true,
+              },
+              implementationsCodeLens = {
+                enabled = true,
+                showOnInterfaceMethods = true,
+              },
+            },
+          },
+        },
+      },
+    },
   },
 }

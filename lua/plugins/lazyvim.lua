@@ -57,10 +57,19 @@ return {
     keys = {
       -- Override LazyVim keymaps
       {
-        "<leader>/",
-        LazyVim.pick("live_grep", { root = false }),
-        -- require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
-        desc = "Find Files (including hidden)",
+        "<leader>sG",
+        function()
+          local cwd = require("lib.files").find_local_project_root()
+          LazyVim.pick("live_grep", { cwd = cwd })()
+        end,
+        desc = "Grep (cwd)",
+      },
+      {
+        "<leader>si",
+        function()
+          require("telescope.builtin").lsp_incoming_calls()
+        end,
+        desc = "Search Incoming Calls",
       },
     },
     opts = {
@@ -95,7 +104,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     opts = function(_, opts)
       local ai = require("mini.ai")
       opts.custom_textobjects.k = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" })
