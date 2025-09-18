@@ -21,11 +21,11 @@ return {
         toggle_fugitive,
         desc = "Open Fugitive",
       },
-      -- {
-      --   "<leader>gl",
-      --   "<cmd>G branch --list<CR>",
-      --   desc = "Branch List",
-      -- },
+      {
+        "<leader>gw",
+        "<cmd>Gwrite<CR>",
+        desc = "Write (stage file)",
+      },
       {
         "<leader>gmt",
         "<cmd>G mergetool<CR>",
@@ -37,12 +37,12 @@ return {
         desc = "Merge Continue",
       },
       {
-        "<leader>gcO",
+        "<leader>rfO",
         "<cmd>G checkout --ours -- %<CR>",
         desc = "Choose ours (file)",
       },
       {
-        "<leader>gcT",
+        "<leader>rfT",
         "<cmd>G checkout --theirs -- %<CR>",
         desc = "Choose theirs (file)",
       },
@@ -54,34 +54,34 @@ return {
     version = "*",
     keys = {
       {
-        "<leader>gco",
+        "<leader>ro",
         "<Plug>(git-conflict-ours)",
         desc = "Choose ours",
       },
       {
-        "<leader>gct",
+        "<leader>rt",
         "<Plug>(git-conflict-theirs)",
         desc = "Choose theirs",
       },
       {
-        "<leader>gcb",
+        "<leader>rb",
         "<Plug>(git-conflict-both)",
         desc = "Choose both",
       },
       {
-        "<leader>gc0",
+        "<leader>r0",
         "<Plug>(git-conflict-none)",
         desc = "Choose none",
       },
       {
-        "[x",
+        "[r",
         "<Plug>(git-conflict-prev-conflict)",
-        desc = "Goto previous Git conflict",
+        desc = "Goto previous Resolvable Git conflict",
       },
       {
-        "]x",
+        "]r",
         "<Plug>(git-conflict-next-conflict)",
-        desc = "Goto next Git conflict",
+        desc = "Goto next Resolvable Git conflict",
       },
     },
     opts = {
@@ -100,6 +100,8 @@ return {
         { "<leader>gd", group = "Delete" },
         { "<leader>gp", group = "Pull Requests" },
         { "<leader>gm", group = "Merge" },
+        { "<leader>r", group = "Resolve Conflicts" },
+        { "<leader>rf", group = "File" },
       })
     end,
   },
