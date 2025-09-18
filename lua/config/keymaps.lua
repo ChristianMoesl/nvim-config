@@ -82,6 +82,10 @@ vim.keymap.set("n", "<leader>gpc", function()
   execute("gprc")
 end, { desc = "Create draft pull request" })
 
+vim.keymap.set("n", "<leader>gpC", function()
+  execute("gprr")
+end, { desc = "Create ready pull request" })
+
 vim.keymap.set("n", "<leader>gpr", function()
   execute("gprmr")
 end, { desc = "Make pull request ready for my team" })
