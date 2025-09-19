@@ -32,47 +32,42 @@ local function isJestTestFile(filepath)
   return false
 end
 
+-- Adapt config file resolving for NX monorepos
+local function findJestConfigFile(file)
+  local lspconfig = require("lspconfig")
+  local nx_project_path = lspconfig.util.root_pattern("project.json")(file)
+  local node_project_path = lspconfig.util.root_pattern("package.json")(file)
+
+  local search_config_file = function(path)
+    if path == nil then
+      return nil
+    end
+    if vim.uv.fs_stat(path .. "/jest.config.ts") then
+      return path .. "/jest.config.ts"
+    end
+    return path .. "/jest.config.js"
+  end
+
+  return search_config_file(nx_project_path) or search_config_file(node_project_path)
+end
+
 return {
+  { "marilari88/neotest-vitest" },
+  { "nvim-neotest/neotest-jest", branch = "main" },
   {
     "nvim-neotest/neotest",
     dependencies = {
       "marilari88/neotest-vitest",
       { "nvim-neotest/neotest-jest", branch = "main" },
     },
-    opts = function(_, opts)
-      opts.adapters = opts.adapters or {}
-      table.insert(opts.adapters, require("neotest-vitest"))
-      table.insert(
-        opts.adapters,
-        require("neotest-jest")({
+    opts = {
+      adapters = {
+        ["neotest-jest"] = {
           isTestFile = isJestTestFile,
-          -- test_file_categories = { "spec", "e2e%-spec", "test", "unit", "regression", "integration", "e2e", "it" },
-          -- Adapt config file resolving for NX monorepos
-          jestConfigFile = function(file)
-            local lspconfig = require("lspconfig")
-            local nx_project_path = lspconfig.util.root_pattern("project.json")(file)
-            local node_project_path = lspconfig.util.root_pattern("package.json")(file)
-
-            local search_config_file = function(path)
-              if path == nil then
-                return nil
-              end
-              if vim.uv.fs_stat(path .. "/jest.config.ts") then
-                return path .. "/jest.config.ts"
-              end
-              return path .. "/jest.config.js"
-            end
-
-            return search_config_file(nx_project_path) or search_config_file(node_project_path)
-          end,
-        })
-      )
-      opts.consumers = {
-        -- output = require("neotest.consumers.output"),
-        -- If you use other features like quickfix lists, you might add this too:
-        -- quickfix = require("neotest.consumers.quickfix"),
-      }
-    end,
+          jestConfigFile = findJestConfigFile,
+        },
+      },
+    },
   },
   {
     "neovim/nvim-lspconfig",
