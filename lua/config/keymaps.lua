@@ -107,3 +107,13 @@ vim.keymap.set("n", "<leader>cgo", function()
 end, { desc = "Generate random ObjectId" })
 
 vim.keymap.set("n", "<leader>cgu", ":r! uuid<cr>", { desc = "Generate random UUID" })
+
+local colors = require("catppuccin.palettes").get_palette()
+
+-- 2. Make window separators more visible
+-- We'll use a subtle grey from the theme, like 'overlay0'
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = colors.overlay0, bg = "none" })
+
+-- 3. Dim inactive windows to make the active window stand out
+-- 'mantle' is the perfect color for this, as it's slightly darker than the 'base' background
+vim.api.nvim_set_hl(0, "NormalNC", { bg = colors.mantle })
