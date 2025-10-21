@@ -1,23 +1,16 @@
-local function extract_path(terminal_buffer_name)
-  local without_prefix = string.sub(terminal_buffer_name, string.len("term://") + 1)
+local terminals = {}
 
-  return string.sub(without_prefix, 1, without_prefix:find("//") - 1)
-end
-
-local function open_terminal()
-  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-    local name = vim.api.nvim_buf_get_name(buffer)
-    if name:find("^term://") ~= nil then
-      local path = extract_path(name)
-      local absolute_path = vim.fn.expand(path)
-
-      if absolute_path == vim.fn.getcwd() then
-        vim.api.nvim_win_set_buf(0, buffer)
-        return
-      end
-    end
+-- @param num number
+local function open_terminal(num)
+  local curr_bufnr = terminals[num]
+  if curr_bufnr and vim.api.nvim_buf_is_valid(curr_bufnr) then
+    vim.api.nvim_win_set_buf(0, curr_bufnr)
+  else
+    vim.cmd(":terminal")
+    local bufnr = vim.api.nvim_get_current_buf()
+    print("Terminal " .. num .. " opened with buffer number: " .. bufnr)
+    terminals[num] = bufnr
   end
-  vim.cmd(":terminal")
 end
 
 return {
@@ -73,8 +66,24 @@ return {
         },
         {
           "<A-h>",
-          open_terminal,
-          desc = "Navigate to terminal",
+          function()
+            open_terminal(1)
+          end,
+          desc = "Navigate to terminal 1",
+        },
+        {
+          "<A-n>",
+          function()
+            open_terminal(2)
+          end,
+          desc = "Navigate to terminal 2",
+        },
+        {
+          "<A-m>",
+          function()
+            open_terminal(2)
+          end,
+          desc = "Navigate to terminal 3",
         },
       }
     end,
