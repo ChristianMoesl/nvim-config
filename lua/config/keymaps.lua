@@ -99,6 +99,10 @@ vim.keymap.set("n", "<leader>gps", function()
   github.switch_pr({ previewer = github.create_pr_previewer() })
 end, { desc = "Switch GitHub PR" })
 
+vim.keymap.set("n", "<leader>gw", function()
+  require("lib.worktree").switch_worktree()
+end, { desc = "Switch git worktree" })
+
 -- Generate random Data
 
 vim.keymap.set("n", "<leader>cgo", function()
