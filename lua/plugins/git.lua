@@ -37,6 +37,21 @@ return {
         desc = "Merge Continue",
       },
       {
+        "<leader>gma",
+        "<cmd>G merge --abort<CR>",
+        desc = "Merge Abort",
+      },
+      {
+        "<leader>grc",
+        "<cmd>G rebase --continue<CR>",
+        desc = "Rebase Continue",
+      },
+      {
+        "<leader>gra",
+        "<cmd>G rebase --abort<CR>",
+        desc = "Rebase Abort",
+      },
+      {
         "<leader>rfO",
         "<cmd>G checkout --ours -- %<CR>",
         desc = "Choose ours (file)",
@@ -100,6 +115,7 @@ return {
         { "<leader>gd", group = "Delete" },
         { "<leader>gp", group = "Pull Requests" },
         { "<leader>gm", group = "Merge" },
+        { "<leader>gr", group = "Rebase" },
         { "<leader>r", group = "Resolve Conflicts" },
         { "<leader>rf", group = "File" },
       })
