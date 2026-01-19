@@ -52,16 +52,17 @@ local function findJestConfigFile(file)
 end
 
 return {
-  { "marilari88/neotest-vitest" },
+  { "ChristianMoesl/neotest-vitest", branch = "main" },
   { "nvim-neotest/neotest-jest", branch = "main" },
   {
     "nvim-neotest/neotest",
     dependencies = {
-      "marilari88/neotest-vitest",
+      "ChristianMoesl/neotest-vitest",
       "nvim-neotest/neotest-jest",
     },
     opts = {
       adapters = {
+        "neotest-vitest",
         ["neotest-jest"] = {
           isTestFile = isJestTestFile,
           jestConfigFile = findJestConfigFile,
