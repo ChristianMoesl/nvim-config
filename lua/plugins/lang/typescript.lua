@@ -14,7 +14,9 @@ local function isJestTestFile(filepath)
   -- 1. Check if the file is inside a `__tests__` directory.
   -- This pattern handles both Unix-style ('/') and Windows-style ('\') separators.
   if filepath:find("/__tests__/") or filepath:find("\\__tests__\\") then
-    return true
+    if filepath:match("%.[jt]sx?$") or filepath:match("%.[jt]s?$") then
+      return true
+    end
   end
 
   -- 2. Check for filename suffixes like `.test.js` or `.spec.tsx`.
