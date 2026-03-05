@@ -26,6 +26,7 @@
     "lazyvim.plugins.extras.test.core",
     "lazyvim.plugins.extras.ui.smear-cursor",
     "lazyvim.plugins.extras.util.dot",
+    "lazyvim.plugins.extras.util.gh",
     "lazyvim.plugins.extras.util.project"
   ],
   "install_version": 8,
