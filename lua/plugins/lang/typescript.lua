@@ -55,7 +55,7 @@ end
 
 return {
   { "ChristianMoesl/neotest-vitest", branch = "main" },
-  { "nvim-neotest/neotest-jest", branch = "main" },
+  -- { "nvim-neotest/neotest-jest", branch = "main" },
   {
     "nvim-neotest/neotest",
     dependencies = {
@@ -65,10 +65,10 @@ return {
     opts = {
       adapters = {
         "neotest-vitest",
-        ["neotest-jest"] = {
-          isTestFile = isJestTestFile,
-          jestConfigFile = findJestConfigFile,
-        },
+        -- ["neotest-jest"] = {
+        --   isTestFile = isJestTestFile,
+        --   jestConfigFile = findJestConfigFile,
+        -- },
       },
     },
   },
