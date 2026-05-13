@@ -1,5 +1,18 @@
 local terminals = {}
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TelescopePreviewerLoaded",
+  callback = function(args)
+    local bufnr = args.buf
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.api.nvim_win_get_buf(win) == bufnr then
+        vim.wo[win].wrap = true
+        break
+      end
+    end
+  end,
+})
+
 -- @param num number
 local function open_terminal(num)
   local curr_bufnr = terminals[num]
