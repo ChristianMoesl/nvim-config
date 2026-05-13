@@ -12,6 +12,15 @@ return {
     },
     opts = {
       explorer = { enabled = false },
+      picker = {
+        win = {
+          preview = {
+            wo = {
+              wrap = true,
+            },
+          },
+        },
+      },
     },
   },
   -- disable Trouble (use quickfix list instead)
@@ -41,6 +50,15 @@ return {
     "catppuccin/nvim",
     opts = {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
+    },
+  },
+  -- async.nvim is required by refactoring.nvim
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "lewis6991/async.nvim",
     },
   },
   { "folke/tokyonight.nvim", enabled = false },
