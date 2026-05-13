@@ -22,7 +22,7 @@ return {
         desc = "Open Fugitive",
       },
       {
-        "<leader>gw",
+        "<leader>gfs",
         "<cmd>Gwrite<CR>",
         desc = "Write (stage file)",
       },
@@ -114,10 +114,14 @@ return {
       opts.spec = vim.list_extend(opts.spec or {}, {
         { "<leader>gd", group = "Delete" },
         { "<leader>gp", group = "Pull Requests" },
+        { "<leader>gpc", group = "Create Pull Request" },
+        { "<leader>gpl", group = "Label Pull Request" },
+        { "<leader>gpm", group = "Merge Pull Request" },
         { "<leader>gm", group = "Merge" },
         { "<leader>gr", group = "Rebase" },
         { "<leader>r", group = "Resolve Conflicts" },
         { "<leader>rf", group = "File" },
+        { "<leader>cp", group = "Pnpm" },
       })
     end,
   },

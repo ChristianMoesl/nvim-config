@@ -78,11 +78,55 @@ end, { desc = "Browse GitHub repo" })
 vim.keymap.set("n", "<leader>gP", "<cmd>G push<cr>", { desc = "Push to remote" })
 vim.keymap.set("n", "<leader>gU", "<cmd>G pull<cr>", { desc = "Pull from remove" })
 
-vim.keymap.set("n", "<leader>gpc", function()
+vim.keymap.set("n", "<leader>gpcd", function()
   execute("gprc")
 end, { desc = "Create draft pull request" })
 
-vim.keymap.set("n", "<leader>gpC", function()
+vim.keymap.set("n", "<leader>gpce", function()
+  execute("gprr")
+  execute("gle")
+end, { desc = "Create emergency pull request" })
+
+vim.keymap.set("n", "<leader>gpcp", function()
+  execute("gprr")
+  execute("glp")
+end, { desc = "Create preapproved pull request" })
+
+vim.keymap.set("n", "<leader>gpcn", function()
+  execute("gprr && gln && gpma")
+  -- execute("gln")
+  -- execute("gpma")
+end, { desc = "Create need no review pull request" })
+
+vim.keymap.set("n", "<leader>gpma", function()
+  execute("gpma")
+end, { desc = "Create need no review pull request" })
+
+vim.keymap.set("n", "<leader>gplp", function()
+  execute("glp")
+end, { desc = "Label pull request preapproved" })
+
+vim.keymap.set("n", "<leader>gple", function()
+  execute("gle")
+end, { desc = "Label pull request emergency" })
+
+vim.keymap.set("n", "<leader>gpln", function()
+  execute("gln")
+end, { desc = "Label pull request needs no review" })
+
+vim.keymap.set("n", "<leader>gpla", function()
+  execute("gla")
+end, { desc = "Label pull request async review" })
+
+vim.keymap.set("n", "<leader>cpf", function()
+  execute("pnpm biome")
+end, { desc = "Pnpm format" })
+
+vim.keymap.set("n", "<leader>cpe", function()
+  execute("pnpm eslint:fix")
+end, { desc = "Pnpm eslint fix" })
+
+vim.keymap.set("n", "<leader>gpcr", function()
   execute("gprr")
 end, { desc = "Create ready pull request" })
 
