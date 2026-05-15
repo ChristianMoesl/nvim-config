@@ -68,6 +68,17 @@ return {
   -- { "adrigzr/neotest-mocha", branch = "main" },
   -- { "nvim-neotest/neotest-jest", branch = "main" },
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      -- Treesitter indent for TypeScript is buggy and produces wrong indentation
+      -- on new lines. Disabling it makes Neovim fall back to LSP indentation.
+      indent = {
+        enable = true,
+        disable = { "typescript", "tsx" },
+      },
+    },
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "ChristianMoesl/neotest-vitest",
