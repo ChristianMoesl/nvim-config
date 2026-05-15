@@ -52,14 +52,95 @@ return {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
     },
   },
-  -- async.nvim is required by refactoring.nvim
   {
     "ThePrimeagen/refactoring.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "lewis6991/async.nvim",
     },
+    keys = {
+      { "<leader>r", "", desc = "+refactor", mode = { "n", "x" } },
+      {
+        "<leader>rs",
+        function()
+          return require("refactoring").select_refactor()
+        end,
+        mode = { "n", "x" },
+        desc = "Refactor",
+      },
+      {
+        "<leader>ri",
+        function()
+          return require("refactoring").inline_var()
+        end,
+        mode = { "n", "x" },
+        desc = "Inline Variable",
+        expr = true,
+      },
+      {
+        "<leader>rI",
+        function()
+          return require("refactoring").inline_func()
+        end,
+        mode = { "n", "x" },
+        desc = "Inline Function",
+        expr = true,
+      },
+      {
+        "<leader>rf",
+        function()
+          return require("refactoring").extract_func()
+        end,
+        mode = { "n", "x" },
+        desc = "Extract Function",
+        expr = true,
+      },
+      {
+        "<leader>rF",
+        function()
+          return require("refactoring").extract_func_to_file()
+        end,
+        mode = { "n", "x" },
+        desc = "Extract Function To File",
+        expr = true,
+      },
+      {
+        "<leader>rx",
+        function()
+          return require("refactoring").extract_var()
+        end,
+        mode = { "n", "x" },
+        desc = "Extract Variable",
+        expr = true,
+      },
+      {
+        "<leader>rp",
+        function()
+          return require("refactoring.debug").print_var({ output_location = "below" })
+        end,
+        mode = { "n", "x" },
+        desc = "Debug Print Variable",
+        expr = true,
+      },
+      {
+        "<leader>rP",
+        function()
+          return require("refactoring.debug").print_loc({ output_location = "below" })
+        end,
+        desc = "Debug Print Location",
+        expr = true,
+      },
+      {
+        "<leader>rc",
+        function()
+          return require("refactoring.debug").cleanup({ restore_view = true })
+        end,
+        mode = { "n", "x" },
+        desc = "Debug Cleanup",
+        expr = true,
+      },
+    },
+    opts = {},
   },
   { "folke/tokyonight.nvim", enabled = false },
   {
