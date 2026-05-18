@@ -65,6 +65,24 @@ end
 
 return {
   { "ChristianMoesl/neotest-vitest", branch = "main" },
+  -- Bump tsserver memory for large monorepos (e.g. rb3ca-rb3 has ~6500 TS files).
+  -- Default is 3072 MB which causes tsserver to OOM-crash on this codebase.
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        vtsls = {
+          settings = {
+            typescript = {
+              tsserver = {
+                maxTsServerMemory = 8192,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   -- { "adrigzr/neotest-mocha", branch = "main" },
   -- { "nvim-neotest/neotest-jest", branch = "main" },
   {
