@@ -1,8 +1,13 @@
 local M = {}
 
+---@class AsyncExecuteOpts
+---@field notify_start? string   Message shown immediately when the job starts
+
 ---@param command_args string|string[]
-function M.execute(command_args)
+---@param opts? AsyncExecuteOpts
+function M.execute(command_args, opts)
   local Job = require("plenary.job")
+  opts = opts or {}
 
   local command
   local args
@@ -13,6 +18,10 @@ function M.execute(command_args)
     command = command_args[1]
     ---@diagnostic disable-next-line: deprecated
     args = table.move(command_args, 2, #command_args, 1, {})
+  end
+
+  if opts.notify_start then
+    vim.notify(opts.notify_start, vim.log.levels.INFO)
   end
 
   ---@diagnostic disable-next-line: missing-fields
@@ -28,7 +37,9 @@ function M.execute(command_args)
         level = vim.log.levels.ERROR
       end
       local msg = table.concat(job:result(), "\n") .. table.concat(job:stderr_result(), "\n")
-      vim.notify(msg, level)
+      vim.schedule(function()
+        vim.notify(msg, level)
+      end)
     end,
   }):start()
 end

@@ -76,46 +76,42 @@ vim.keymap.set("n", "<leader>gv", function()
 end, { desc = "Browse GitHub repo" })
 
 vim.keymap.set("n", "<leader>gP", "<cmd>G push<cr>", { desc = "Push to remote" })
-vim.keymap.set("n", "<leader>gU", "<cmd>G pull<cr>", { desc = "Pull from remove" })
+vim.keymap.set("n", "<leader>gU", "<cmd>G pull<cr>", { desc = "Pull from remote" })
 
 vim.keymap.set("n", "<leader>gpcd", function()
-  execute("gprc")
+  execute("gprc", { notify_start = "⏳ Creating draft pull request…" })
 end, { desc = "Create draft pull request" })
 
 vim.keymap.set("n", "<leader>gpce", function()
-  execute("gprr")
-  execute("gle")
+  execute("gprr && gle", { notify_start = "⏳ Creating emergency pull request…" })
 end, { desc = "Create emergency pull request" })
 
 vim.keymap.set("n", "<leader>gpcp", function()
-  execute("gprr")
-  execute("glp")
+  execute("gprr && glp", { notify_start = "⏳ Creating preapproved pull request…" })
 end, { desc = "Create preapproved pull request" })
 
 vim.keymap.set("n", "<leader>gpcn", function()
-  execute("gprr && gln && gpma")
-  -- execute("gln")
-  -- execute("gpma")
+  execute("gprr && gln && gpma", { notify_start = "⏳ Creating no-review pull request…" })
 end, { desc = "Create need no review pull request" })
 
 vim.keymap.set("n", "<leader>gpma", function()
-  execute("gpma")
-end, { desc = "Create need no review pull request" })
+  execute("gpma", { notify_start = "⏳ Auto-merging pull request…" })
+end, { desc = "Auto-merge pull request" })
 
 vim.keymap.set("n", "<leader>gplp", function()
-  execute("glp")
+  execute("glp", { notify_start = "⏳ Labelling PR preapproved…" })
 end, { desc = "Label pull request preapproved" })
 
 vim.keymap.set("n", "<leader>gple", function()
-  execute("gle")
+  execute("gle", { notify_start = "⏳ Labelling PR emergency…" })
 end, { desc = "Label pull request emergency" })
 
 vim.keymap.set("n", "<leader>gpln", function()
-  execute("gln")
+  execute("gln", { notify_start = "⏳ Labelling PR needs-no-review…" })
 end, { desc = "Label pull request needs no review" })
 
 vim.keymap.set("n", "<leader>gpla", function()
-  execute("gla")
+  execute("gla", { notify_start = "⏳ Labelling PR async review…" })
 end, { desc = "Label pull request async review" })
 
 vim.keymap.set("n", "<leader>cpf", function()
@@ -127,11 +123,11 @@ vim.keymap.set("n", "<leader>cpe", function()
 end, { desc = "Pnpm eslint fix" })
 
 vim.keymap.set("n", "<leader>gpcr", function()
-  execute("gprr")
+  execute("gprr", { notify_start = "⏳ Creating ready pull request…" })
 end, { desc = "Create ready pull request" })
 
 vim.keymap.set("n", "<leader>gpr", function()
-  execute("gprmr")
+  execute("gprmr", { notify_start = "⏳ Making pull request ready for team…" })
 end, { desc = "Make pull request ready for my team" })
 
 vim.keymap.set("n", "<leader>gdC", function()
