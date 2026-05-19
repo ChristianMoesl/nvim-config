@@ -102,10 +102,30 @@ return {
     opts = {
       default_mappings = false, -- disable buffer local mapping created by this plugin
       default_commands = true, -- disable commands created by this plugin
-      disable_diagnostics = true, -- This will disable the diagnostics in a buffer whilst it is conflicted
+      -- Keep false: git-conflict uses the old vim.diagnostic.disable/enable(bufnr) API
+      -- which was removed in Neovim 0.12. We re-implement the feature below.
+      disable_diagnostics = false,
     },
     config = function(_, opts)
       require("git-conflict").setup(opts)
+
+      -- Re-implement disable_diagnostics with the Neovim 0.12+ API:
+      --   vim.diagnostic.enable(boolean, { bufnr = n })
+      local augroup = vim.api.nvim_create_augroup("GitConflictDiagnostics", { clear = true })
+      vim.api.nvim_create_autocmd("User", {
+        group = augroup,
+        pattern = "GitConflictDetected",
+        callback = function()
+          vim.diagnostic.enable(false, { bufnr = vim.api.nvim_get_current_buf() })
+        end,
+      })
+      vim.api.nvim_create_autocmd("User", {
+        group = augroup,
+        pattern = "GitConflictResolved",
+        callback = function()
+          vim.diagnostic.enable(true, { bufnr = vim.api.nvim_get_current_buf() })
+        end,
+      })
     end,
   },
   {
