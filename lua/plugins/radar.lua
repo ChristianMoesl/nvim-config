@@ -58,67 +58,67 @@ local function reload_radar()
   end)
 end
 
-return {
-  {
-    dir = plugin_dir,
-    name = "radar.nvim",
-    lazy = false,
-    build = "go build -o radar ./cmd/radar",
-    cmd = { "Radar", "RadarRefresh", "RadarStart", "RadarStop", "RadarRestart" },
-    keys = {
-      {
-        "<leader>mm",
-        function()
-          require("radar").open()
-        end,
-        desc = "Open Radar",
-      },
-      {
-        "<leader>mr",
-        function()
-          require("radar").refresh()
-        end,
-        desc = "Refresh Radar",
-      },
-      {
-        "<leader>ml",
-        reload_radar,
-        desc = "Reload Radar",
-      },
-    },
-    config = function()
-      setup_radar()
-
-      vim.api.nvim_create_autocmd("BufWritePost", {
-        group = vim.api.nvim_create_augroup("RadarNvimDevReload", { clear = true }),
-        pattern = plugin_dir .. "/lua/radar/*.lua",
-        callback = reload_radar,
-      })
-    end,
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.sections = opts.sections or {}
-      opts.sections.lualine_x = opts.sections.lualine_x or {}
-      table.insert(opts.sections.lualine_x, 1, {
-        function()
-          return require("radar").statusline()
-        end,
-        cond = function()
-          return package.loaded["radar"] ~= nil
-        end,
-      })
-    end,
-  },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.spec = vim.list_extend(opts.spec or {}, {
-        { "<leader>m", group = "Monitor" },
-      })
-    end,
-  },
-}
+return {}
+--   {
+--     dir = plugin_dir,
+--     name = "radar.nvim",
+--     lazy = false,
+--     build = "go build -o radar ./cmd/radar",
+--     cmd = { "Radar", "RadarRefresh", "RadarStart", "RadarStop", "RadarRestart" },
+--     keys = {
+--       {
+--         "<leader>mm",
+--         function()
+--           require("radar").open()
+--         end,
+--         desc = "Open Radar",
+--       },
+--       {
+--         "<leader>mr",
+--         function()
+--           require("radar").refresh()
+--         end,
+--         desc = "Refresh Radar",
+--       },
+--       {
+--         "<leader>ml",
+--         reload_radar,
+--         desc = "Reload Radar",
+--       },
+--     },
+--     config = function()
+--       setup_radar()
+--
+--       vim.api.nvim_create_autocmd("BufWritePost", {
+--         group = vim.api.nvim_create_augroup("RadarNvimDevReload", { clear = true }),
+--         pattern = plugin_dir .. "/lua/radar/*.lua",
+--         callback = reload_radar,
+--       })
+--     end,
+--   },
+--   {
+--     "nvim-lualine/lualine.nvim",
+--     optional = true,
+--     opts = function(_, opts)
+--       opts.sections = opts.sections or {}
+--       opts.sections.lualine_x = opts.sections.lualine_x or {}
+--       table.insert(opts.sections.lualine_x, 1, {
+--         function()
+--           return require("radar").statusline()
+--         end,
+--         cond = function()
+--           return package.loaded["radar"] ~= nil
+--         end,
+--       })
+--     end,
+--   },
+--   {
+--     "folke/which-key.nvim",
+--     optional = true,
+--     opts = function(_, opts)
+--       opts.spec = vim.list_extend(opts.spec or {}, {
+--         { "<leader>m", group = "Monitor" },
+--       })
+--     end,
+--   },
+-- }
