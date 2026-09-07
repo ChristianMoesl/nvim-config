@@ -25,6 +25,64 @@ local function find_common_prefix(paths)
   return common_prefix
 end
 
+local function is_within(path, directory)
+  path = vim.fs.normalize(path)
+  directory = vim.fs.normalize(directory)
+  return path == directory or vim.startswith(path, directory .. "/")
+end
+
+local function switch_directory(path)
+  vim.cmd("tcd " .. vim.fn.fnameescape(path))
+
+  local ok, oil = pcall(require, "oil")
+  if ok then
+    oil.open(path)
+  end
+
+  vim.notify("Switched to: " .. path, vim.log.levels.INFO)
+end
+
+local function pick(items, title)
+  local ok, snacks = pcall(require, "snacks")
+  if not ok then
+    vim.notify("Snacks is not available", vim.log.levels.ERROR)
+    return
+  end
+
+  snacks.picker({
+    title = title,
+    finder = function()
+      return items
+    end,
+    format = function(item)
+      local marker = item.current and "● " or "  "
+      local marker_highlight = item.current and "DiagnosticOk" or "Comment"
+      local result = {
+        { marker, marker_highlight },
+        { item.repository, "Directory" },
+      }
+
+      if item.branch then
+        table.insert(result, { "  " .. item.branch, "Comment" })
+      end
+      if item.dirty then
+        table.insert(result, { "  dirty", "DiagnosticWarn" })
+      end
+
+      return result
+    end,
+    preview = "none",
+    confirm = function(picker, item)
+      picker:close()
+      if item then
+        vim.schedule(function()
+          switch_directory(item.path)
+        end)
+      end
+    end,
+  })
+end
+
 function M.get_worktrees()
   local handle = io.popen("git worktree list --porcelain 2>/dev/null")
   if not handle then
@@ -59,7 +117,7 @@ function M.get_worktrees()
   return worktrees
 end
 
-function M.switch_worktree()
+function M.switch_git_worktree()
   local worktrees = M.get_worktrees()
 
   if #worktrees == 0 then
@@ -68,53 +126,81 @@ function M.switch_worktree()
   end
 
   local current_dir = vim.fn.getcwd()
-
-  local paths = vim.tbl_map(function(wt)
-    return wt.path
+  local paths = vim.tbl_map(function(worktree)
+    return worktree.path
   end, worktrees)
   local common_prefix = find_common_prefix(paths)
-
   local items = {}
 
-  for _, wt in ipairs(worktrees) do
-    local label = wt.path:sub(#common_prefix + 1)
-    if label == "" then
-      label = wt.path
+  for _, worktree in ipairs(worktrees) do
+    local repository = worktree.path:sub(#common_prefix + 1)
+    if repository == "" then
+      repository = worktree.path
     end
-    if wt.branch then
-      label = label .. " [" .. wt.branch .. "]"
-    end
-    local is_current = wt.path == current_dir
-    if is_current then
-      label = label .. " (current)"
-    end
-    table.insert(items, { label = label, path = wt.path, is_current = is_current })
+
+    table.insert(items, {
+      text = table.concat({ repository, worktree.branch or "", worktree.path }, " "),
+      repository = repository,
+      branch = worktree.branch,
+      path = worktree.path,
+      current = is_within(current_dir, worktree.path),
+    })
   end
 
-  vim.ui.select(items, {
-    prompt = "Select worktree:",
-    format_item = function(item)
-      return item.label
-    end,
-    kind = "worktree",
-  }, function(choice)
-    if choice and choice.path ~= current_dir then
-      -- Change to the new worktree directory
-      vim.cmd("cd " .. vim.fn.fnameescape(choice.path))
+  pick(items, "Git worktrees")
+end
 
-      -- Close all buffers to avoid confusion with files from old worktree
-      vim.cmd("only")
-      vim.cmd("wa")
-      vim.cmd("bufdo bwipeout!")
+local function pick_radar_repositories(context)
+  if not vim.islist(context.members) or #context.members == 0 then
+    vim.notify("This Radar workspace has no repositories", vim.log.levels.WARN)
+    return
+  end
 
-      -- Refresh oil.nvim if available
-      local ok, oil = pcall(require, "oil")
-      if ok then
-        oil.open(choice.path)
+  local current_dir = vim.fn.getcwd()
+  local items = {}
+
+  for _, member in ipairs(context.members) do
+    local repository = vim.fs.basename(member.repository)
+    table.insert(items, {
+      text = table.concat({ repository, member.branch or "", member.path }, " "),
+      repository = repository,
+      branch = member.branch,
+      path = member.path,
+      dirty = member.dirty,
+      current = is_within(current_dir, member.path),
+    })
+  end
+
+  pick(items, "Radar repositories")
+end
+
+function M.switch_worktree()
+  if vim.fn.executable("radar") ~= 1 then
+    M.switch_git_worktree()
+    return
+  end
+
+  vim.system({ "radar", "workspace-context", "--workspace", vim.fn.getcwd() }, { text = true }, function(result)
+    vim.schedule(function()
+      if result.code ~= 0 then
+        if (result.stderr or ""):find("not a flat Radar worktree", 1, true) then
+          M.switch_git_worktree()
+          return
+        end
+
+        local message = vim.trim(result.stderr or "")
+        vim.notify(message ~= "" and message or "Could not load the Radar workspace", vim.log.levels.ERROR)
+        return
       end
 
-      vim.notify("Switched to: " .. choice.path, vim.log.levels.INFO)
-    end
+      local ok, context = pcall(vim.json.decode, result.stdout)
+      if not ok or type(context) ~= "table" then
+        vim.notify("Radar returned invalid workspace context", vim.log.levels.ERROR)
+        return
+      end
+
+      pick_radar_repositories(context)
+    end)
   end)
 end
 

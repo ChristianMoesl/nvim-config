@@ -141,7 +141,7 @@ end, { desc = "Switch GitHub PR" })
 
 vim.keymap.set("n", "<leader>gw", function()
   require("lib.worktree").switch_worktree()
-end, { desc = "Switch git worktree" })
+end, { desc = "Switch workspace repository" })
 
 -- Generate random Data
 
