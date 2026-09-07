@@ -71,12 +71,16 @@ local function pick(items, title)
 
       return result
     end,
-    preview = "none",
+    layout = { preset = "select" },
     confirm = function(picker, item)
       picker:close()
       if item then
         vim.schedule(function()
-          switch_directory(item.path)
+          if item.file then
+            vim.cmd.edit(vim.fn.fnameescape(item.file))
+          else
+            switch_directory(item.path)
+          end
         end)
       end
     end,
@@ -151,15 +155,19 @@ function M.switch_git_worktree()
 end
 
 local function pick_radar_repositories(context)
-  if not vim.islist(context.members) or #context.members == 0 then
-    vim.notify("This Radar workspace has no repositories", vim.log.levels.WARN)
-    return
-  end
-
   local current_dir = vim.fn.getcwd()
   local items = {}
 
-  for _, member in ipairs(context.members) do
+  if context.note then
+    table.insert(items, {
+      text = "note.md " .. context.note.workspace_path,
+      repository = "note.md",
+      file = context.note.workspace_path,
+      current = vim.api.nvim_buf_get_name(0) == context.note.workspace_path,
+    })
+  end
+
+  for _, member in ipairs(context.members or {}) do
     local repository = vim.fs.basename(member.repository)
     table.insert(items, {
       text = table.concat({ repository, member.branch or "", member.path }, " "),
@@ -171,7 +179,12 @@ local function pick_radar_repositories(context)
     })
   end
 
-  pick(items, "Radar repositories")
+  if #items == 0 then
+    vim.notify("This Radar workspace has no note or repositories", vim.log.levels.WARN)
+    return
+  end
+
+  pick(items, "Radar workspace")
 end
 
 function M.switch_worktree()
