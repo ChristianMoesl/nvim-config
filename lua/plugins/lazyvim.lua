@@ -9,6 +9,10 @@ return {
       { "<leader>fE", false },
       { "<leader>e", false },
       { "<leader>E", false },
+      { "<leader>gd", false },
+      { "<leader>gD", false },
+      { "<leader>gp", false },
+      { "<leader>gP", false },
     },
     opts = {
       explorer = { enabled = false },
@@ -34,8 +38,6 @@ return {
         "<cmd>TodoQuickFix keywords=TODO,FIX,FIXME<cr>",
         desc = "Todo/Fix/Fixme",
       },
-      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-      { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
     },
   },
   -- disable buffer status bar at the top
@@ -150,43 +152,6 @@ return {
         { "<leader>cg", group = "Generate" },
       })
     end,
-  },
-  {
-    "nvim-telescope/telescope.nvim",
-    keys = {
-      -- Override LazyVim keymaps
-      {
-        "<leader>sG",
-        function()
-          local cwd = require("lib.files").find_local_project_root()
-          LazyVim.pick("live_grep", { cwd = cwd })()
-        end,
-        desc = "Grep (cwd)",
-      },
-      {
-        "<leader>si",
-        function()
-          require("telescope.builtin").lsp_incoming_calls()
-        end,
-        desc = "Search Incoming Calls",
-      },
-    },
-    opts = {
-      defaults = {
-        layout_strategy = "vertical",
-        -- ignored files are described in ~/.rgignore
-        vimgrep_arguments = {
-          "rg",
-          "--color=never",
-          "--no-heading",
-          "--with-filename",
-          "--line-number",
-          "--column",
-          "--smart-case",
-          "--hidden", -- also search hidden files
-        },
-      },
-    },
   },
   {
     "mfussenegger/nvim-lint",

@@ -135,8 +135,7 @@ vim.keymap.set("n", "<leader>gdC", function()
 end, { desc = "GC local branches without remote" })
 
 vim.keymap.set("n", "<leader>gps", function()
-  local github = require("lib.github")
-  github.switch_pr({ previewer = github.create_pr_previewer() })
+  require("lib.github").switch_pr()
 end, { desc = "Switch GitHub PR" })
 
 vim.keymap.set("n", "<leader>gw", function()

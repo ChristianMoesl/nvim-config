@@ -20,9 +20,7 @@ return {
     event = {
       -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
       -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-      "BufReadPre "
-        .. notes_directory
-        .. "/**.md",
+      "BufReadPre " .. notes_directory .. "/**.md",
       "BufNewFile " .. notes_directory .. "/**.md",
     },
     keys = {
@@ -49,12 +47,12 @@ return {
     end,
   },
   {
-    "nvim-telescope/telescope.nvim",
+    "folke/snacks.nvim",
     keys = {
       {
         "<leader>fn",
         function()
-          require("telescope.builtin").find_files({ cwd = notes_directory_expanded })
+          Snacks.picker.files({ cwd = notes_directory_expanded })
         end,
         desc = "Notes",
       },

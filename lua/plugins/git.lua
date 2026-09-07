@@ -146,12 +146,12 @@ return {
     end,
   },
   {
-    "nvim-telescope/telescope.nvim",
+    "folke/snacks.nvim",
     keys = {
       {
         "<leader>gl",
         function()
-          require("telescope.builtin").git_branches()
+          Snacks.picker.git_branches()
         end,
         desc = "List Git Branches",
       },
