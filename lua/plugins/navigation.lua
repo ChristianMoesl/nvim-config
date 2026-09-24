@@ -92,6 +92,16 @@ return {
     "stevearc/oil.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     lazy = false,
+    init = function()
+      -- Register early so Oil buffers opened during startup are also picker targets.
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("oil_snacks_main", { clear = true }),
+        pattern = "oil",
+        callback = function(args)
+          vim.b[args.buf].snacks_main = true
+        end,
+      })
+    end,
     keys = {
       {
         "<leader>fe",
