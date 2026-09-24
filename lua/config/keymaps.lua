@@ -15,8 +15,7 @@ vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" 
 vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
 
 -- Diagnostic Mappings
-local filter_and_report = function(level)
-  vim.cmd("Cfilter! /build\\/openApi\\//")
+local report_empty_diagnostics = function(level)
   local items = vim.fn.len(vim.fn.getqflist())
   if items == 0 then
     vim.notify("No " .. level .. "diagnostics found", vim.log.levels.INFO)
@@ -30,7 +29,7 @@ vim.keymap.set("n", "<leader>xa", function()
       min = vim.diagnostic.severity.INFO,
     },
   })
-  filter_and_report("")
+  report_empty_diagnostics("")
 end, { desc = "All diagnostics" })
 
 vim.keymap.set("n", "<leader>xi", function()
@@ -41,7 +40,7 @@ vim.keymap.set("n", "<leader>xi", function()
       max = vim.diagnostic.severity.INFO,
     },
   })
-  filter_and_report("info ")
+  report_empty_diagnostics("info ")
 end, { desc = "Info diagnostics" })
 
 vim.keymap.set("n", "<leader>xw", function()
@@ -52,7 +51,7 @@ vim.keymap.set("n", "<leader>xw", function()
       max = vim.diagnostic.severity.WARN,
     },
   })
-  filter_and_report("warning ")
+  report_empty_diagnostics("warning ")
 end, { desc = "Warning diagnostics" })
 
 vim.keymap.set("n", "<leader>xe", function()
@@ -62,7 +61,7 @@ vim.keymap.set("n", "<leader>xe", function()
       min = vim.diagnostic.severity.ERROR,
     },
   })
-  filter_and_report("error ")
+  report_empty_diagnostics("error ")
 end, { desc = "Error diagnostics" })
 
 -- Git Mappings
